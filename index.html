@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World of Darkness - Лаунчер</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #8b0000;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #333;
+            margin-top: 5px;
+            width: auto;
+            padding: 8px 16px;
+        }
+        .btn-secondary:hover {
+            background: #555;
+        }
+        .main-menu {
+            display: none;
+        }
+        .main-menu.active {
+            display: block;
+        }
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .user-name {
+            color: #8b0000;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .game-card {
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #444;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #8b0000;
+            background: #333;
+        }
+        .game-icon { font-size: 48px; margin-bottom: 15px; }
+        .game-title { font-size: 16px; font-weight: bold; color: #8b0000; margin-bottom: 10px; }
+        .game-desc { font-size: 11px; color: #888; }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+        .notification.success { background: rgba(76, 175, 80, 0.95); }
+        .notification.error { background: rgba(244, 67, 54, 0.95); }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🩸 WORLD OF DARKNESS</h1>
+        <div class="subtitle">Выберите свою историю</div>
+
+        <!-- Форма входа -->
+        <div id="loginSection">
+            <div class="input-group">
+                <label>👤 Ваш никнейм</label>
+                <input type="text" id="username" placeholder="Введите ваш ник" autocomplete="off">
+            </div>
+            <button class="btn" onclick="login()">Войти / Зарегистрироваться</button>
+        </div>
+
+        <!-- Главное меню -->
+        <div class="main-menu" id="mainMenu">
+            <div class="user-info">
+                <span class="user-name" id="currentUsername"></span>
+                <button class="btn-secondary" onclick="logout()">Выйти</button>
+            </div>
+
+            <div class="games-grid">
+                <div class="game-card" onclick="openGame('VTM20_FULL.html', 'VTM')">
+                    <div class="game-icon">🩸</div>
+                    <div class="game-title">Vampire: The Masquerade</div>
+                    <div class="game-desc">Лист персонажа V20</div>
+                </div>
+
+                <div class="game-card" onclick="openGame('Mage_WOD.html', 'Mage')">
+                    <div class="game-icon">🔮</div>
+                    <div class="game-title">Mage: The Ascension</div>
+                    <div class="game-desc">Лист мага</div>
+                </div>
+
+                <div class="game-card" onclick="openGame('Hunt_WOD.html', 'Hunter')">
+                    <div class="game-icon">⚔️</div>
+                    <div class="game-title">Hunter: The Reckoning</div>
+                    <div class="game-desc">Лист охотника</div>
+                </div>
+
+                <div class="game-card" onclick="openGame('Dice VTM20.html', 'Dice')">
+                    <div class="game-icon">🎲</div>
+                    <div class="game-title">Dice Simulator</div>
+                    <div class="game-desc">Симулятор кубов</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; font-size: 12px; color: #666;">
+                💾 Все сохранения автоматически синхронизируются в облаке
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ВАШ API URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyb0yWxIcylcmWwMYBs_2b-GexrcKx062vfY0j4DSxhNOWbkDyKmkIsz-yYmkry-oIJZQ/exec';
+        
+        let currentUser = null;
+
+        // Проверяем сохранённую сессию
+        function checkSession() {
+            const savedUser = localStorage.getItem('wod_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                document.getElementById('currentUsername').textContent = currentUser;
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('mainMenu').classList.add('active');
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('username').value.trim();
+            
+            if (!username) {
+                showNotification('Введите никнейм!', 'error');
+                return;
+            }
+            
+            if (username.length < 2) {
+                showNotification('Ник должен быть не менее 2 символов', 'error');
+                return;
+            }
+            
+            currentUser = username;
+            localStorage.setItem('wod_user', username);
+            document.getElementById('currentUsername').textContent = username;
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('mainMenu').classList.add('active');
+            showNotification(`Добро пожаловать, ${username}!`, 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('wod_user');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainMenu').classList.remove('active');
+            document.getElementById('username').value = '';
+        }
+
+        function openGame(gameFile, gameType) {
+            if (!currentUser) {
+                showNotification('Сначала войдите в систему', 'error');
+                return;
+            }
+            
+            // Сохраняем данные для передачи в игру
+            sessionStorage.setItem('wod_current_user', currentUser);
+            sessionStorage.setItem('wod_api_url', API_URL);
+            sessionStorage.setItem('wod_game_type', gameType);
+            
+            // Открываем игру
+            window.open(gameFile, '_blank');
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Запуск
+        checkSession();
+    </script>
+</body>
+</html>

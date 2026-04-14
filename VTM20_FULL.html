@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лист персонажа Vampire: The Masquerade V20</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background-color: #0a0a0a;
+            color: #cccccc;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8b0000;
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #cccccc;
+            font-size: 14px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        h3 {
+            color: #8b0000;
+            font-size: 16px;
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .separator {
+            height: 2px;
+            background-color: #8b0000;
+            margin: 15px 0;
+        }
+
+        /* Кнопки управления */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #2a2a2a;
+            color: #cccccc;
+            border: 1px solid #8b0000;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background-color: #8b0000;
+            color: #ffffff;
+        }
+
+        /* Профиль */
+        .profile-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .profile-field {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-field label {
+            width: 90px;
+            color: #aaaaaa;
+            font-size: 13px;
+        }
+
+        .profile-field input {
+            flex: 1;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 8px 10px;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+
+        .profile-field input:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+
+        /* Характеристики и Способности */
+        .attributes-section, .abilities-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .attr-column, .ability-column {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .attr-column h4, .ability-column h4 {
+            color: #8b0000;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .attr-row, .ability-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .attr-row label, .ability-row label {
+            width: 140px;
+            color: #aaaaaa;
+            font-size: 12px;
+        }
+
+        .dots-container {
+            display: flex;
+            gap: 3px;
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #555;
+        }
+
+        .dot.filled {
+            background-color: #8b0000;
+            border-color: #8b0000;
+        }
+
+        .dot.square {
+            border-radius: 2px;
+        }
+
+        .dot.square.filled {
+            background-color: #8b0000;
+        }
+
+        /* Преимущества */
+        .advantages-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .discipline-row, .background-row, .virtue-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .discipline-row input, .background-row input {
+            width: 130px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 5px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+        .virtue-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .virtue-row label {
+            width: 170px;
+            color: #aaaaaa;
+            font-size: 12px;
+        }
+
+        /* Нижний блок */
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .merits-flaws {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .merit-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .merit-row input[type="text"] {
+            flex: 1;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 5px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        .merit-row input[type="text"]:last-child {
+            width: 50px;
+            flex: none;
+            text-align: center;
+        }
+
+        .center-panel {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .health-panel {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .health-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .health-row label {
+            width: 130px;
+            color: #aaaaaa;
+            font-size: 12px;
+        }
+
+        .health-state {
+            width: 35px;
+            height: 30px;
+            background-color: #333;
+            border: 1px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            color: #666;
+            margin-right: 5px;
+        }
+
+        .health-state.state-1 { color: #ff6666; }
+        .health-state.state-2 { color: #ff0000; }
+        .health-state.state-3 { color: #8b0000; }
+
+        .path-field {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .path-field label {
+            width: 60px;
+            color: #aaaaaa;
+            font-size: 12px;
+        }
+
+        .path-field input {
+            flex: 1;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 5px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .will-section, .blood-section {
+            margin: 15px 0;
+        }
+
+        .will-row, .blood-row {
+            margin: 10px 0;
+        }
+
+        .will-row label, .blood-row label {
+            display: block;
+            color: #aaaaaa;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .blood-spend {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .blood-spend label {
+            width: 120px;
+            margin-bottom: 0;
+        }
+
+        .blood-spend input {
+            width: 60px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .exp-field {
+            margin-top: 20px;
+        }
+
+        .exp-field label {
+            display: block;
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .exp-field input {
+            width: 100%;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        /* Заметки */
+        .notes-section {
+            margin-top: 15px;
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #ffffff;
+            padding: 10px;
+            font-size: 13px;
+            border-radius: 3px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .notes-section textarea:focus {
+            outline: none;
+            border-color: #8b0000;
+        }
+
+        /* Подсказка */
+        .hint {
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        /* Плавающая кнопка кубов */
+        .floating-dice-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b0000, #cc0000);
+            border: 3px solid #ffcc00;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .floating-dice-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(255, 0, 0, 0.8);
+        }
+
+        .floating-dice-btn.active {
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            border-color: #8b0000;
+            color: #1a1a1a;
+        }
+
+        /* Модальное окно броска */
+        .dice-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dice-modal.active {
+            display: flex;
+        }
+
+        .dice-panel {
+            background: #1a1a1a;
+            border: 2px solid #8b0000;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .dice-panel h3 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для мультивыбора */
+        .trait-checkbox-list {
+            max-height: 350px;
+            overflow-y: auto;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .trait-category {
+            color: #ffcc00;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #8b0000;
+        }
+
+        .trait-category:first-child {
+            margin-top: 0;
+        }
+
+        .trait-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .trait-checkbox-item:hover {
+            background: rgba(139, 0, 0, 0.3);
+        }
+
+        .trait-checkbox-item input {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #8b0000;
+        }
+
+        .trait-checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+            color: #cccccc;
+        }
+
+        .trait-checkbox-item .trait-value {
+            color: #8b0000;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .selected-summary {
+            background: #1a1a1a;
+            border: 1px solid #8b0000;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .selected-summary h4 {
+            color: #ffcc00;
+            margin-bottom: 8px;
+        }
+
+        .selected-trait-badge {
+            display: inline-block;
+            background: #8b0000;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+        .selected-trait-badge:hover {
+            background: #cc0000;
+        }
+
+        .total-dice-count {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffcc00;
+            text-align: center;
+            margin: 10px 0 5px;
+        }
+
+        .select-all-btn {
+            background: #2a2a2a;
+            color: #cccccc;
+            border: 1px solid #8b0000;
+            padding: 5px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .select-all-btn:hover {
+            background: #8b0000;
+            color: white;
+        }
+
+        .dice-result-panel {
+            background: #0a0a0a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .dice-roll-results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .dice-die {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            background: #2a2a2a;
+            border: 2px solid;
+        }
+
+        .dice-die.success {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-color: #4ecdc4;
+        }
+
+        .dice-die.critical {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-color: #ffd700;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dice-die.failure {
+            background: #333;
+            border-color: #666;
+            opacity: 0.7;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .dice-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .dice-action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+        }
+
+        .dice-action-btn.willpower {
+            background: linear-gradient(135deg, #4ecdc4, #3ba89f);
+            color: white;
+        }
+
+        .dice-action-btn.blood {
+            background: linear-gradient(135deg, #e94560, #c62a47);
+            color: white;
+        }
+
+        .dice-action-btn.finish {
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            color: #1a1a1a;
+        }
+
+        .dice-action-btn.new-roll {
+            background: linear-gradient(135deg, #8b0000, #cc0000);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .dice-action-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .dice-action-btn:not(:disabled):hover {
+            transform: scale(1.02);
+        }
+
+        /* История бросков */
+        .dice-history {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
+
+        .dice-history h4 {
+            color: #8b0000;
+            margin-bottom: 10px;
+        }
+
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #2a2a2a;
+            border-radius: 5px;
+            font-size: 12px;
+            border-left: 3px solid #8b0000;
+        }
+
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+            z-index: 3000;
+        }
+
+        .notification.failure {
+            background: rgba(244, 67, 54, 0.95);
+            color: white;
+        }
+
+        .notification.success {
+            background: rgba(76, 175, 80, 0.95);
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal-btn {
+            background: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #selectedTraitsDisplay {
+            color: #ffcc00;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Плавающая кнопка кубов -->
+    <div class="floating-dice-btn" id="diceBtn" onclick="toggleDiceMode()">
+        🎲
+    </div>
+
+    <!-- Модальное окно броска -->
+    <div class="dice-modal" id="diceModal">
+        <div class="dice-panel">
+            <h3>🎲 Бросок кубов (мультивыбор)</h3>
+            
+            <div id="diceSelectionArea">
+                <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                    <button class="select-all-btn" onclick="selectAllTraits()">✓ Выбрать всё</button>
+                    <button class="select-all-btn" onclick="deselectAllTraits()">✗ Снять всё</button>
+                </div>
+                
+                <div class="trait-checkbox-list" id="traitCheckboxList"></div>
+                
+                <div class="selected-summary" id="selectedSummary" style="display: none;">
+                    <h4>Выбрано:</h4>
+                    <div id="selectedTraitsList"></div>
+                    <div class="total-dice-count">
+                        🎲 Всего кубов: <span id="totalDiceCount">0</span>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="rollSelectedTraits()" style="width: 100%; margin-top: 10px;" id="rollTraitsBtn" disabled>
+                    🎲 Бросить выбранное (0 кубов)
+                </button>
+            </div>
+            
+            <div id="diceResultArea" style="display: none;">
+                <div class="dice-result-panel">
+                    <div id="selectedTraitsDisplay"></div>
+                    <div class="dice-roll-results" id="diceRollResults"></div>
+                    <div style="text-align: center; font-size: 18px; margin: 10px 0;">
+                        ✅ Успехов: <span id="currentSuccesses" style="color: #4ecdc4; font-size: 24px; font-weight: bold;">0</span>
+                    </div>
+                    
+                    <div class="dice-actions">
+                        <button class="dice-action-btn willpower" id="spendWillpowerDiceBtn" onclick="spendWillpowerOnRoll()" disabled>
+                            💫 Воля (-1)
+                        </button>
+                        <button class="dice-action-btn blood" id="spendBloodDiceBtn" onclick="spendBloodOnRoll()" disabled>
+                            🩸 Кровь (-1)
+                        </button>
+                    </div>
+                    
+                    <button class="dice-action-btn finish" id="finishRollBtn" onclick="finishRoll()">
+                        📊 Итог
+                    </button>
+                    
+                    <button class="dice-action-btn new-roll" id="newRollBtn" onclick="resetToSelection()" style="display: none;">
+                        🎲 Новый бросок
+                    </button>
+                </div>
+            </div>
+            
+            <!-- История бросков -->
+            <div class="dice-history">
+                <h4>📜 История бросков</h4>
+                <div class="history-list" id="diceHistoryList">
+                    <div class="history-item">История пуста</div>
+                </div>
+            </div>
+            
+            <button class="close-modal-btn" onclick="closeDiceModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>VAMPIRE: THE MASQUERADE V20</h1>
+        <h2>ЛИСТ ПЕРСОНАЖА</h2>
+
+        <!-- Кнопки управления -->
+        <div class="controls">
+            <button class="btn" onclick="saveCharacter()">💾 Сохранить</button>
+            <button class="btn" onclick="loadCharacter()">📂 Загрузить</button>
+            <button class="btn" onclick="newCharacter()">🆕 Новый</button>
+            <button class="btn" onclick="exportToFile()">📄 Экспорт</button>
+            <button class="btn" onclick="importFromFile()">📥 Импорт</button>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Профиль -->
+        <div class="profile-section">
+            <div class="profile-field"><label>Имя:</label> <input type="text" id="name"></div>
+            <div class="profile-field"><label>Натура:</label> <input type="text" id="nature"></div>
+            <div class="profile-field"><label>Клан:</label> <input type="text" id="clan"></div>
+            <div class="profile-field"><label>Игрок:</label> <input type="text" id="player"></div>
+            <div class="profile-field"><label>Маска:</label> <input type="text" id="demeanor"></div>
+            <div class="profile-field"><label>Поколение:</label> <input type="text" id="generation"></div>
+            <div class="profile-field"><label>Хроника:</label> <input type="text" id="chronicle"></div>
+            <div class="profile-field"><label>Амплуа:</label> <input type="text" id="role"></div>
+            <div class="profile-field"><label>Сир:</label> <input type="text" id="sire"></div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Характеристики -->
+        <h3>ХАРАКТЕРИСТИКИ</h3>
+        <div class="attributes-section">
+            <div class="attr-column">
+                <h4>ФИЗИЧЕСКИЕ</h4>
+                <div id="attr-physical"></div>
+            </div>
+            <div class="attr-column">
+                <h4>СОЦИАЛЬНЫЕ</h4>
+                <div id="attr-social"></div>
+            </div>
+            <div class="attr-column">
+                <h4>МЕНТАЛЬНЫЕ</h4>
+                <div id="attr-mental"></div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Способности -->
+        <h3>СПОСОБНОСТИ</h3>
+        <div class="abilities-section">
+            <div class="ability-column">
+                <h4>ТАЛАНТЫ</h4>
+                <div id="ability-talents"></div>
+            </div>
+            <div class="ability-column">
+                <h4>НАВЫКИ</h4>
+                <div id="ability-skills"></div>
+            </div>
+            <div class="ability-column">
+                <h4>ЗНАНИЯ</h4>
+                <div id="ability-knowledges"></div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Преимущества -->
+        <h3>ПРЕИМУЩЕСТВА</h3>
+        <div class="advantages-section">
+            <div class="attr-column">
+                <h4>ДИСЦИПЛИНЫ</h4>
+                <div id="disciplines"></div>
+            </div>
+            <div class="attr-column">
+                <h4>ФАКТЫ БИОГРАФИИ</h4>
+                <div id="backgrounds"></div>
+            </div>
+            <div class="attr-column">
+                <h4>ДОБРОДЕТЕЛИ</h4>
+                <div id="virtues"></div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Нижний блок -->
+        <div class="bottom-section">
+            <div class="merits-flaws">
+                <h4 style="color: #8b0000; text-align: center; margin-bottom: 10px;">ДОСТОИНСТВА И НЕДОСТАТКИ</h4>
+                <div id="merits"></div>
+            </div>
+            <div class="center-panel">
+                <h4 style="color: #8b0000; text-align: center; margin-bottom: 10px;">ЧЕЛОВЕЧНОСТЬ/ПУТЬ</h4>
+                <div class="path-field">
+                    <label>Путь:</label>
+                    <input type="text" id="pathName" placeholder="">
+                </div>
+                <div id="humanity-container" style="margin: 10px 0;"></div>
+                
+                <h4 style="color: #8b0000; text-align: center; margin: 15px 0 10px;">ВОЛЯ</h4>
+                <div class="will-section">
+                    <div class="will-row">
+                        <label>Временная:</label>
+                        <div id="willTemp-container"></div>
+                    </div>
+                    <div class="will-row">
+                        <label>Постоянная:</label>
+                        <div id="willPerm-container"></div>
+                    </div>
+                </div>
+                
+                <h4 style="color: #8b0000; text-align: center; margin: 15px 0 10px;">ЗАПАС КРОВИ</h4>
+                <div class="blood-section">
+                    <div id="bloodPool-container"></div>
+                    <div class="blood-spend">
+                        <label>Траты в ход:</label>
+                        <input type="text" id="bloodSpend" placeholder="0" maxlength="3">
+                    </div>
+                </div>
+            </div>
+            <div class="health-panel">
+                <h4 style="color: #8b0000; text-align: center; margin-bottom: 10px;">ЗДОРОВЬЕ</h4>
+                <div id="health"></div>
+                
+                <h4 style="color: #8b0000; text-align: center; margin: 20px 0 10px;">ОПЫТ</h4>
+                <div class="exp-field">
+                    <input type="text" id="experience" placeholder="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- Заметки -->
+        <h3>ЗАМЕТКИ</h3>
+        <div class="notes-section">
+            <textarea id="notes" placeholder="Введите заметки о персонаже..."></textarea>
+        </div>
+
+        <div class="hint">
+            Левая кнопка мыши — увеличить | Правая кнопка мыши — уменьшить | Здоровье: ЛКМ — увеличить, ПКМ — уменьшить
+        </div>
+    </div>
+
+    <script>
+        // ==================== ДАННЫЕ ПЕРСОНАЖА ====================
+        const characterData = {
+            attributes: {
+                physical: ['Сила', 'Ловкость', 'Выносливость'],
+                social: ['Обаяние', 'Манипуляция', 'Привлекательность'],
+                mental: ['Восприятие', 'Интеллект', 'Смекалка']
+            },
+            abilities: {
+                talents: ['Атлетика', 'Бдительность', 'Драка', 'Запугивание', 'Красноречие', 'Лидерство', 'Уличное чутьё', 'Хитрость', 'Шестое чувство', 'Эмпатия'],
+                skills: ['Вождение', 'Воровство', 'Выживание', 'Исполнение', 'Обр. с животными', 'Ремесло', 'Скрытность', 'Стрельба', 'Фехтование', 'Этикет'],
+                knowledges: ['Гум. науки', 'Ест. науки', 'Законы', 'Информатика', 'Медицина', 'Оккультизм', 'Политика', 'Расследование', 'Финансы', 'Электроника']
+            },
+            virtues: ['Совесть/Решимость', 'Самоконтроль/Инстинкты', 'Смелость'],
+            healthLevels: [
+                { name: 'Помят', mod: '' },
+                { name: 'Легко ранен', mod: '-1' },
+                { name: 'Ранен', mod: '-1' },
+                { name: 'Серьёзно ранен', mod: '-2' },
+                { name: 'Тяжело ранен', mod: '-2' },
+                { name: 'Едва жив', mod: '-5' },
+                { name: 'При смерти', mod: '' }
+            ],
+            healthStates: [' ', '/', 'X', 'Ж']
+        };
+
+        // Хранилище значений
+        const values = {
+            attributes: {},
+            abilities: {},
+            disciplines: [],
+            backgrounds: [],
+            virtues: {},
+            merits: [],
+            willTemp: 5,
+            willPerm: 5,
+            bloodPool: 10,
+            humanity: 7,
+            health: Array(7).fill(0)
+        };
+
+        // Состояние броска
+        let currentRoll = {
+            traitName: '',
+            diceCount: 0,
+            rolls: [],
+            successes: 0,
+            willpowerSpent: false,
+            bloodSpent: false,
+            completed: false
+        };
+        let diceHistory = [];
+
+        // Состояние мультивыбора
+        let selectedTraits = new Set();
+        let allTraitsList = [];
+
+        // ==================== ИНИЦИАЛИЗАЦИЯ ИНТЕРФЕЙСА ====================
+        function init() {
+            initAttributes();
+            initAbilities();
+            initDisciplines();
+            initBackgrounds();
+            initVirtues();
+            initMerits();
+            initHumanity();
+            initWillpower();
+            initBloodPool();
+            initHealth();
+            setInitialValues();
+            loadDiceHistory();
+        }
+
+        function initAttributes() {
+            const physicalContainer = document.getElementById('attr-physical');
+            const socialContainer = document.getElementById('attr-social');
+            const mentalContainer = document.getElementById('attr-mental');
+            
+            characterData.attributes.physical.forEach(attr => {
+                physicalContainer.appendChild(createDotRow(attr, `attributes.${attr}`, 5, 1));
+            });
+            
+            characterData.attributes.social.forEach(attr => {
+                socialContainer.appendChild(createDotRow(attr, `attributes.${attr}`, 5, 1));
+            });
+            
+            characterData.attributes.mental.forEach(attr => {
+                mentalContainer.appendChild(createDotRow(attr, `attributes.${attr}`, 5, 1));
+            });
+        }
+
+        function initAbilities() {
+            const talentsContainer = document.getElementById('ability-talents');
+            const skillsContainer = document.getElementById('ability-skills');
+            const knowledgesContainer = document.getElementById('ability-knowledges');
+            
+            characterData.abilities.talents.forEach(ability => {
+                talentsContainer.appendChild(createDotRow(ability, `abilities.${ability}`, 5, 0));
+            });
+            
+            characterData.abilities.skills.forEach(ability => {
+                skillsContainer.appendChild(createDotRow(ability, `abilities.${ability}`, 5, 0));
+            });
+            
+            characterData.abilities.knowledges.forEach(ability => {
+                knowledgesContainer.appendChild(createDotRow(ability, `abilities.${ability}`, 5, 0));
+            });
+        }
+
+        function initDisciplines() {
+            const container = document.getElementById('disciplines');
+            values.disciplines = [];
+            for (let i = 0; i < 6; i++) {
+                values.disciplines.push({ name: '', value: 0 });
+                container.appendChild(createInputDotRow(i, 'disciplines', 5));
+            }
+        }
+
+        function initBackgrounds() {
+            const container = document.getElementById('backgrounds');
+            values.backgrounds = [];
+            for (let i = 0; i < 6; i++) {
+                values.backgrounds.push({ name: '', value: 0 });
+                container.appendChild(createInputDotRow(i, 'backgrounds', 5));
+            }
+        }
+
+        function initVirtues() {
+            const container = document.getElementById('virtues');
+            characterData.virtues.forEach(virtue => {
+                container.appendChild(createDotRow(virtue, `virtues.${virtue}`, 5, 1));
+            });
+        }
+
+        function initMerits() {
+            const container = document.getElementById('merits');
+            values.merits = [];
+            for (let i = 0; i < 12; i++) {
+                values.merits.push({ name: '', value: '' });
+                const row = document.createElement('div');
+                row.className = 'merit-row';
+                
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.id = `merit-${i}-name`;
+                nameInput.placeholder = 'Название';
+                
+                const valueInput = document.createElement('input');
+                valueInput.type = 'text';
+                valueInput.id = `merit-${i}-value`;
+                valueInput.placeholder = 'Очки';
+                valueInput.maxLength = 3;
+                
+                row.appendChild(nameInput);
+                row.appendChild(valueInput);
+                container.appendChild(row);
+            }
+        }
+
+        function initHumanity() {
+            const container = document.getElementById('humanity-container');
+            container.appendChild(createDotRowSimple('humanity', 10, 7));
+        }
+
+        function initWillpower() {
+            const tempContainer = document.getElementById('willTemp-container');
+            const permContainer = document.getElementById('willPerm-container');
+            
+            tempContainer.appendChild(createDotRowSimple('willTemp', 10, 5));
+            permContainer.appendChild(createDotRowSimple('willPerm', 10, 5, true));
+        }
+
+        function initBloodPool() {
+            const container = document.getElementById('bloodPool-container');
+            container.appendChild(createDotRowSimple('bloodPool', 20, 10));
+        }
+
+        function initHealth() {
+            const container = document.getElementById('health');
+            characterData.healthLevels.forEach((level, index) => {
+                const row = document.createElement('div');
+                row.className = 'health-row';
+                
+                const label = document.createElement('label');
+                label.textContent = level.name + (level.mod ? ' ' + level.mod : '');
+                row.appendChild(label);
+                
+                const stateDiv = document.createElement('div');
+                stateDiv.className = 'health-state';
+                stateDiv.id = `health-${index}`;
+                stateDiv.dataset.index = index;
+                stateDiv.textContent = characterData.healthStates[0];
+                
+                stateDiv.addEventListener('click', () => handleHealthClick(index, true));
+                stateDiv.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleHealthClick(index, false);
+                });
+                
+                row.appendChild(stateDiv);
+                container.appendChild(row);
+            });
+        }
+
+        function createDotRow(label, key, maxDots, defaultValue) {
+            const row = document.createElement('div');
+            row.className = 'attr-row';
+            
+            const labelEl = document.createElement('label');
+            labelEl.textContent = label + ':';
+            row.appendChild(labelEl);
+            
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'dots-container';
+            dotsContainer.id = `${key.replace(/\./g, '-')}-dots`;
+            
+            for (let i = 0; i < maxDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.index = i;
+                dot.dataset.key = key;
+                dot.dataset.max = maxDots;
+                dot.addEventListener('click', handleDotClick);
+                dot.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleDotRightClick(e);
+                });
+                dotsContainer.appendChild(dot);
+            }
+            
+            row.appendChild(dotsContainer);
+            return row;
+        }
+
+        function createInputDotRow(index, prefix, maxDots) {
+            const row = document.createElement('div');
+            row.className = 'discipline-row';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `${prefix}-${index}-input`;
+            input.placeholder = 'Название';
+            input.addEventListener('input', (e) => {
+                if (prefix === 'disciplines') {
+                    values.disciplines[index].name = e.target.value;
+                } else {
+                    values.backgrounds[index].name = e.target.value;
+                }
+            });
+            row.appendChild(input);
+            
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'dots-container';
+            dotsContainer.id = `${prefix}-${index}-dots`;
+            
+            for (let i = 0; i < maxDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.index = i;
+                dot.dataset.prefix = prefix;
+                dot.dataset.rowIndex = index;
+                dot.dataset.max = maxDots;
+                dot.addEventListener('click', handleInputDotClick);
+                dot.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleInputDotRightClick(e);
+                });
+                dotsContainer.appendChild(dot);
+            }
+            
+            row.appendChild(dotsContainer);
+            return row;
+        }
+
+        function createDotRowSimple(key, maxDots, defaultValue, isSquare = false) {
+            const container = document.createElement('div');
+            container.className = 'dots-container';
+            container.id = `${key}-dots`;
+            
+            for (let i = 0; i < maxDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (isSquare ? ' square' : '');
+                dot.dataset.index = i;
+                dot.dataset.key = key;
+                dot.dataset.max = maxDots;
+                dot.addEventListener('click', handleSimpleDotClick);
+                dot.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleSimpleDotRightClick(e);
+                });
+                container.appendChild(dot);
+            }
+            
+            return container;
+        }
+
+        // ==================== ОБРАБОТЧИКИ ТОЧЕК ====================
+        function handleDotClick(e) {
+            const key = e.target.dataset.key;
+            const index = parseInt(e.target.dataset.index);
+            const currentValue = getValueByKey(key);
+            
+            if (index === currentValue - 1) {
+                setValueByKey(key, currentValue - 1);
+            } else {
+                setValueByKey(key, index + 1);
+            }
+            updateDotsDisplay(e.target.parentElement, getValueByKey(key));
+        }
+
+        function handleDotRightClick(e) {
+            const key = e.target.dataset.key;
+            const currentValue = getValueByKey(key);
+            setValueByKey(key, Math.max(0, currentValue - 1));
+            updateDotsDisplay(e.target.parentElement, getValueByKey(key));
+        }
+
+        function handleInputDotClick(e) {
+            const prefix = e.target.dataset.prefix;
+            const rowIndex = parseInt(e.target.dataset.rowIndex);
+            const index = parseInt(e.target.dataset.index);
+            
+            let currentValue;
+            if (prefix === 'disciplines') {
+                currentValue = values.disciplines[rowIndex].value;
+            } else {
+                currentValue = values.backgrounds[rowIndex].value;
+            }
+            
+            let newValue;
+            if (index === currentValue - 1) {
+                newValue = currentValue - 1;
+            } else {
+                newValue = index + 1;
+            }
+            
+            if (prefix === 'disciplines') {
+                values.disciplines[rowIndex].value = newValue;
+            } else {
+                values.backgrounds[rowIndex].value = newValue;
+            }
+            
+            updateDotsDisplay(e.target.parentElement, newValue);
+        }
+
+        function handleInputDotRightClick(e) {
+            const prefix = e.target.dataset.prefix;
+            const rowIndex = parseInt(e.target.dataset.rowIndex);
+            
+            let currentValue;
+            if (prefix === 'disciplines') {
+                currentValue = values.disciplines[rowIndex].value;
+                values.disciplines[rowIndex].value = Math.max(0, currentValue - 1);
+                updateDotsDisplay(e.target.parentElement, values.disciplines[rowIndex].value);
+            } else {
+                currentValue = values.backgrounds[rowIndex].value;
+                values.backgrounds[rowIndex].value = Math.max(0, currentValue - 1);
+                updateDotsDisplay(e.target.parentElement, values.backgrounds[rowIndex].value);
+            }
+        }
+
+        function handleSimpleDotClick(e) {
+            const key = e.target.dataset.key;
+            const index = parseInt(e.target.dataset.index);
+            const currentValue = values[key];
+            
+            if (index === currentValue - 1) {
+                values[key] = currentValue - 1;
+            } else {
+                values[key] = index + 1;
+            }
+            updateDotsDisplay(e.target.parentElement, values[key]);
+        }
+
+        function handleSimpleDotRightClick(e) {
+            const key = e.target.dataset.key;
+            values[key] = Math.max(0, values[key] - 1);
+            updateDotsDisplay(e.target.parentElement, values[key]);
+        }
+
+        function handleHealthClick(index, increment) {
+            if (increment) {
+                values.health[index] = Math.min(3, values.health[index] + 1);
+            } else {
+                values.health[index] = Math.max(0, values.health[index] - 1);
+            }
+            updateHealthDisplay();
+        }
+
+        function getValueByKey(key) {
+            const parts = key.split('.');
+            if (parts[0] === 'attributes') return values.attributes[parts[1]] || 0;
+            if (parts[0] === 'abilities') return values.abilities[parts[1]] || 0;
+            if (parts[0] === 'virtues') return values.virtues[parts[1]] || 0;
+            return 0;
+        }
+
+        function setValueByKey(key, value) {
+            const parts = key.split('.');
+            if (parts[0] === 'attributes') values.attributes[parts[1]] = value;
+            else if (parts[0] === 'abilities') values.abilities[parts[1]] = value;
+            else if (parts[0] === 'virtues') values.virtues[parts[1]] = value;
+        }
+
+        function updateDotsDisplay(container, value) {
+            const dots = container.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index < value) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function updateHealthDisplay() {
+            characterData.healthLevels.forEach((_, index) => {
+                const stateDiv = document.getElementById(`health-${index}`);
+                if (stateDiv) {
+                    const state = values.health[index];
+                    stateDiv.textContent = characterData.healthStates[state];
+                    stateDiv.className = 'health-state';
+                    if (state === 1) stateDiv.classList.add('state-1');
+                    else if (state === 2) stateDiv.classList.add('state-2');
+                    else if (state === 3) stateDiv.classList.add('state-3');
+                }
+            });
+        }
+
+        function setInitialValues() {
+            characterData.attributes.physical.forEach(attr => values.attributes[attr] = 1);
+            characterData.attributes.social.forEach(attr => values.attributes[attr] = 1);
+            characterData.attributes.mental.forEach(attr => values.attributes[attr] = 1);
+            characterData.virtues.forEach(v => values.virtues[v] = 1);
+            
+            setTimeout(() => {
+                document.querySelectorAll('.dots-container').forEach(container => {
+                    const firstDot = container.querySelector('.dot');
+                    if (firstDot) {
+                        const key = firstDot.dataset.key;
+                        if (key) {
+                            updateDotsDisplay(container, getValueByKey(key));
+                        }
+                    }
+                });
+                
+                updateDotsDisplay(document.getElementById('humanity-dots'), values.humanity);
+                updateDotsDisplay(document.getElementById('willTemp-dots'), values.willTemp);
+                updateDotsDisplay(document.getElementById('willPerm-dots'), values.willPerm);
+                updateDotsDisplay(document.getElementById('bloodPool-dots'), values.bloodPool);
+                
+                updateHealthDisplay();
+            }, 10);
+        }
+
+        // ==================== ФУНКЦИИ БРОСКА КУБОВ ====================
+        function toggleDiceMode() {
+            const modal = document.getElementById('diceModal');
+            if (modal.classList.contains('active')) {
+                closeDiceModal();
+            } else {
+                openDiceModal();
+            }
+        }
+
+        function openDiceModal() {
+            document.getElementById('diceModal').classList.add('active');
+            document.getElementById('diceBtn').classList.add('active');
+            selectedTraits.clear();
+            renderTraitCheckboxes();
+            resetToSelection();
+        }
+
+        function closeDiceModal() {
+            document.getElementById('diceModal').classList.remove('active');
+            document.getElementById('diceBtn').classList.remove('active');
+            resetToSelection();
+        }
+
+        function buildAllTraitsList() {
+            allTraitsList = [];
+            
+            // Характеристики
+            characterData.attributes.physical.forEach(attr => {
+                allTraitsList.push({ category: 'Физические', name: attr, key: `attr_${attr}`, value: values.attributes[attr] || 0 });
+            });
+            characterData.attributes.social.forEach(attr => {
+                allTraitsList.push({ category: 'Социальные', name: attr, key: `attr_${attr}`, value: values.attributes[attr] || 0 });
+            });
+            characterData.attributes.mental.forEach(attr => {
+                allTraitsList.push({ category: 'Ментальные', name: attr, key: `attr_${attr}`, value: values.attributes[attr] || 0 });
+            });
+            
+            // Способности - Таланты
+            characterData.abilities.talents.forEach(ab => {
+                allTraitsList.push({ category: 'Таланты', name: ab, key: `ab_${ab}`, value: values.abilities[ab] || 0 });
+            });
+            
+            // Способности - Навыки
+            characterData.abilities.skills.forEach(ab => {
+                allTraitsList.push({ category: 'Навыки', name: ab, key: `ab_${ab}`, value: values.abilities[ab] || 0 });
+            });
+            
+            // Способности - Знания (включая Гум. науки и Ест. науки)
+            characterData.abilities.knowledges.forEach(ab => {
+                allTraitsList.push({ category: 'Знания', name: ab, key: `ab_${ab}`, value: values.abilities[ab] || 0 });
+            });
+            
+            // Дисциплины
+            values.disciplines.forEach((disc, i) => {
+                if (disc.name) {
+                    allTraitsList.push({ category: 'Дисциплины', name: disc.name, key: `disc_${i}`, value: disc.value });
+                }
+            });
+            
+            // Факты биографии
+            values.backgrounds.forEach((bg, i) => {
+                if (bg.name) {
+                    allTraitsList.push({ category: 'Факты биографии', name: bg.name, key: `bg_${i}`, value: bg.value });
+                }
+            });
+            
+            // Добродетели
+            characterData.virtues.forEach(virtue => {
+                allTraitsList.push({ category: 'Добродетели', name: virtue, key: `virt_${virtue}`, value: values.virtues[virtue] || 0 });
+            });
+        }
+
+        function renderTraitCheckboxes() {
+            buildAllTraitsList();
+            
+            const container = document.getElementById('traitCheckboxList');
+            container.innerHTML = '';
+            
+            const categories = {};
+            allTraitsList.forEach(trait => {
+                if (!categories[trait.category]) {
+                    categories[trait.category] = [];
+                }
+                categories[trait.category].push(trait);
+            });
+            
+            Object.keys(categories).forEach(category => {
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'trait-category';
+                categoryHeader.textContent = category;
+                container.appendChild(categoryHeader);
+                
+                categories[category].forEach(trait => {
+                    if (trait.value > 0) {
+                        const item = document.createElement('div');
+                        item.className = 'trait-checkbox-item';
+                        
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `chk_${trait.key}`;
+                        checkbox.dataset.key = trait.key;
+                        checkbox.checked = selectedTraits.has(trait.key);
+                        checkbox.addEventListener('change', (e) => {
+                            if (e.target.checked) {
+                                selectedTraits.add(trait.key);
+                            } else {
+                                selectedTraits.delete(trait.key);
+                            }
+                            updateSelectedSummary();
+                        });
+                        
+                        const label = document.createElement('label');
+                        label.htmlFor = `chk_${trait.key}`;
+                        label.textContent = trait.name;
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.className = 'trait-value';
+                        valueSpan.textContent = trait.value;
+                        
+                        item.appendChild(checkbox);
+                        item.appendChild(label);
+                        item.appendChild(valueSpan);
+                        
+                        item.addEventListener('click', (e) => {
+                            if (e.target !== checkbox) {
+                                checkbox.checked = !checkbox.checked;
+                                if (checkbox.checked) {
+                                    selectedTraits.add(trait.key);
+                                } else {
+                                    selectedTraits.delete(trait.key);
+                                }
+                                updateSelectedSummary();
+                            }
+                        });
+                        
+                        container.appendChild(item);
+                    }
+                });
+            });
+            
+            updateSelectedSummary();
+        }
+
+        function updateSelectedSummary() {
+            const summaryDiv = document.getElementById('selectedSummary');
+            const selectedList = document.getElementById('selectedTraitsList');
+            const totalDiceSpan = document.getElementById('totalDiceCount');
+            const rollBtn = document.getElementById('rollTraitsBtn');
+            
+            let totalDice = 0;
+            const selectedItems = [];
+            
+            selectedTraits.forEach(key => {
+                const trait = allTraitsList.find(t => t.key === key);
+                if (trait) {
+                    totalDice += trait.value;
+                    selectedItems.push(trait);
+                } else if (key.startsWith('bg_')) {
+                    const index = parseInt(key.replace('bg_', ''));
+                    if (values.backgrounds[index] && values.backgrounds[index].name) {
+                        totalDice += values.backgrounds[index].value;
+                        selectedItems.push({
+                            category: 'Факты биографии',
+                            name: values.backgrounds[index].name,
+                            key: key,
+                            value: values.backgrounds[index].value
+                        });
+                    }
+                }
+            });
+            
+            if (selectedItems.length > 0) {
+                summaryDiv.style.display = 'block';
+                
+                selectedList.innerHTML = '';
+                selectedItems.forEach(trait => {
+                    const badge = document.createElement('span');
+                    badge.className = 'selected-trait-badge';
+                    badge.textContent = `${trait.name} (${trait.value})`;
+                    badge.onclick = () => {
+                        selectedTraits.delete(trait.key);
+                        const chk = document.getElementById(`chk_${trait.key}`);
+                        if (chk) chk.checked = false;
+                        updateSelectedSummary();
+                    };
+                    selectedList.appendChild(badge);
+                });
+                
+                totalDiceSpan.textContent = totalDice;
+                rollBtn.disabled = totalDice === 0;
+                rollBtn.textContent = `🎲 Бросить выбранное (${totalDice} кубов)`;
+            } else {
+                summaryDiv.style.display = 'none';
+                rollBtn.disabled = true;
+                rollBtn.textContent = '🎲 Бросить выбранное (0 кубов)';
+            }
+        }
+
+        function selectAllTraits() {
+            allTraitsList.forEach(trait => {
+                if (trait.value > 0) {
+                    selectedTraits.add(trait.key);
+                }
+            });
+            renderTraitCheckboxes();
+        }
+
+        function deselectAllTraits() {
+            selectedTraits.clear();
+            renderTraitCheckboxes();
+        }
+
+        function rollSelectedTraits() {
+            if (selectedTraits.size === 0) {
+                showNotification('Выберите хотя бы одну характеристику!', 'failure');
+                return;
+            }
+            
+            let totalDice = 0;
+            const selectedNames = [];
+            
+            selectedTraits.forEach(key => {
+                const trait = allTraitsList.find(t => t.key === key);
+                if (trait) {
+                    totalDice += trait.value;
+                    selectedNames.push(`${trait.name} (${trait.value})`);
+                } else if (key.startsWith('bg_')) {
+                    const index = parseInt(key.replace('bg_', ''));
+                    if (values.backgrounds[index] && values.backgrounds[index].name) {
+                        totalDice += values.backgrounds[index].value;
+                        selectedNames.push(`${values.backgrounds[index].name} (${values.backgrounds[index].value})`);
+                    }
+                }
+            });
+            
+            if (totalDice === 0) {
+                showNotification('Нет очков в выбранных характеристиках!', 'failure');
+                return;
+            }
+            
+            const traitDisplayName = selectedNames.join(' + ');
+            
+            currentRoll = {
+                traitName: traitDisplayName,
+                diceCount: totalDice,
+                rolls: [],
+                successes: 0,
+                willpowerSpent: false,
+                bloodSpent: false,
+                completed: false
+            };
+            
+            for (let i = 0; i < totalDice; i++) {
+                const roll = Math.floor(Math.random() * 10) + 1;
+                let type, successes;
+                
+                if (roll === 10) {
+                    type = 'critical';
+                    successes = 2;
+                } else if (roll % 2 === 0) {
+                    type = 'success';
+                    successes = 1;
+                } else {
+                    type = 'failure';
+                    successes = 0;
+                }
+                
+                currentRoll.rolls.push({ value: roll, type, successes });
+                currentRoll.successes += successes;
+            }
+            
+            displayRollResultsMulti(traitDisplayName);
+            
+            document.getElementById('diceSelectionArea').style.display = 'none';
+            document.getElementById('diceResultArea').style.display = 'block';
+            document.getElementById('newRollBtn').style.display = 'none';
+            document.getElementById('finishRollBtn').style.display = 'block';
+            
+            updateDiceActionButtons();
+        }
+
+        function displayRollResultsMulti(traitNames) {
+            const container = document.getElementById('diceRollResults');
+            container.innerHTML = '';
+            
+            document.getElementById('selectedTraitsDisplay').innerHTML = 
+                `Бросок: <strong>${traitNames}</strong><br>Всего кубов: ${currentRoll.diceCount}`;
+            
+            currentRoll.rolls.forEach(roll => {
+                const die = document.createElement('div');
+                die.className = `dice-die ${roll.type}`;
+                die.textContent = roll.value;
+                container.appendChild(die);
+            });
+            
+            document.getElementById('currentSuccesses').textContent = currentRoll.successes;
+        }
+
+        function updateDiceActionButtons() {
+            const willBtn = document.getElementById('spendWillpowerDiceBtn');
+            const bloodBtn = document.getElementById('spendBloodDiceBtn');
+            
+            willBtn.disabled = currentRoll.willpowerSpent || values.willTemp <= 0 || currentRoll.completed;
+            
+            const hasFailures = currentRoll.rolls.some(r => r.type === 'failure');
+            bloodBtn.disabled = currentRoll.bloodSpent || values.bloodPool <= 0 || !hasFailures || currentRoll.completed;
+        }
+
+        function spendWillpowerOnRoll() {
+            if (currentRoll.willpowerSpent || values.willTemp <= 0 || currentRoll.completed) return;
+            
+            values.willTemp--;
+            currentRoll.successes += 1;
+            currentRoll.willpowerSpent = true;
+            
+            updateDotsDisplay(document.getElementById('willTemp-dots'), values.willTemp);
+            document.getElementById('currentSuccesses').textContent = currentRoll.successes;
+            updateDiceActionButtons();
+            
+            showNotification('Воля потрачена! +1 успех', 'success');
+        }
+
+        function spendBloodOnRoll() {
+            if (currentRoll.bloodSpent || values.bloodPool <= 0 || currentRoll.completed) return;
+            
+            const failureIndices = [];
+            currentRoll.rolls.forEach((roll, i) => {
+                if (roll.type === 'failure') failureIndices.push(i);
+            });
+            
+            if (failureIndices.length === 0) {
+                showNotification('Нет кубов для переброса!', 'failure');
+                return;
+            }
+            
+            values.bloodPool--;
+            currentRoll.bloodSpent = true;
+            
+            let anySuccess = false;
+            failureIndices.forEach(index => {
+                const newValue = Math.floor(Math.random() * 10) + 1;
+                let type, successes;
+                
+                if (newValue === 10) {
+                    type = 'critical';
+                    successes = 2;
+                } else if (newValue % 2 === 0) {
+                    type = 'success';
+                    successes = 1;
+                } else {
+                    type = 'failure';
+                    successes = 0;
+                }
+                
+                currentRoll.rolls[index] = { value: newValue, type, successes };
+                
+                if (type !== 'failure') {
+                    anySuccess = true;
+                }
+            });
+            
+            currentRoll.successes = currentRoll.rolls.reduce((sum, r) => sum + r.successes, 0);
+            
+            updateDotsDisplay(document.getElementById('bloodPool-dots'), values.bloodPool);
+            displayRollResultsMulti(currentRoll.traitName);
+            updateDiceActionButtons();
+            
+            if (anySuccess) {
+                showNotification('Кровь потрачена! Переброс дал успехи!', 'success');
+            } else {
+                showNotification('Кровь затрачена впустую...', 'failure');
+            }
+        }
+
+        function finishRoll() {
+            if (currentRoll.completed) return;
+            
+            currentRoll.completed = true;
+            updateDiceActionButtons();
+            
+            const historyEntry = {
+                trait: currentRoll.traitName,
+                diceCount: currentRoll.diceCount,
+                finalSuccesses: currentRoll.successes,
+                willpowerUsed: currentRoll.willpowerSpent,
+                bloodUsed: currentRoll.bloodSpent,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            
+            diceHistory.unshift(historyEntry);
+            if (diceHistory.length > 20) diceHistory.pop();
+            
+            saveDiceHistory();
+            updateDiceHistoryDisplay();
+            
+            showNotification(`Итог: ${currentRoll.successes} успехов!`, 'success');
+            
+            document.getElementById('newRollBtn').style.display = 'block';
+            document.getElementById('finishRollBtn').style.display = 'none';
+        }
+
+        function resetToSelection() {
+            document.getElementById('diceSelectionArea').style.display = 'block';
+            document.getElementById('diceResultArea').style.display = 'none';
+            document.getElementById('newRollBtn').style.display = 'none';
+            document.getElementById('finishRollBtn').style.display = 'block';
+            
+            selectedTraits.clear();
+            renderTraitCheckboxes();
+            
+            currentRoll = {
+                traitName: '',
+                diceCount: 0,
+                rolls: [],
+                successes: 0,
+                willpowerSpent: false,
+                bloodSpent: false,
+                completed: false
+            };
+        }
+
+        function updateDiceHistoryDisplay() {
+            const container = document.getElementById('diceHistoryList');
+            
+            if (diceHistory.length === 0) {
+                container.innerHTML = '<div class="history-item">История пуста</div>';
+                return;
+            }
+            
+            container.innerHTML = diceHistory.map(entry => {
+                let details = [];
+                if (entry.willpowerUsed) details.push('💫 Воля');
+                if (entry.bloodUsed) details.push('🩸 Кровь');
+                
+                let traitShort = entry.trait;
+                if (traitShort.length > 50) {
+                    traitShort = traitShort.substring(0, 47) + '...';
+                }
+                
+                return `
+                    <div class="history-item">
+                        <strong>${traitShort}</strong><br>
+                        🎲 ${entry.diceCount} кубов → ${entry.finalSuccesses} успехов
+                        ${details.length ? '<br>🔹 ' + details.join(' + ') : ''}
+                        <br><span style="opacity: 0.6;">${entry.timestamp}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function saveDiceHistory() {
+            localStorage.setItem('vtmDiceHistory', JSON.stringify(diceHistory));
+        }
+
+        function loadDiceHistory() {
+            const saved = localStorage.getItem('vtmDiceHistory');
+            if (saved) {
+                diceHistory = JSON.parse(saved);
+                updateDiceHistoryDisplay();
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // ==================== СОХРАНЕНИЕ И ЗАГРУЗКА ПЕРСОНАЖА ====================
+        function collectData() {
+            const data = {
+                profile: {},
+                attributes: { ...values.attributes },
+                abilities: { ...values.abilities },
+                virtues: { ...values.virtues },
+                disciplines: values.disciplines.filter(d => d.name),
+                backgrounds: values.backgrounds.filter(b => b.name),
+                merits: [],
+                willTemp: values.willTemp,
+                willPerm: values.willPerm,
+                bloodPool: values.bloodPool,
+                bloodSpend: document.getElementById('bloodSpend').value,
+                humanity: values.humanity,
+                pathName: document.getElementById('pathName').value,
+                health: [...values.health],
+                experience: document.getElementById('experience').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            ['name', 'nature', 'clan', 'player', 'demeanor', 'generation', 'chronicle', 'role', 'sire'].forEach(field => {
+                data.profile[field] = document.getElementById(field).value;
+            });
+            
+            for (let i = 0; i < 12; i++) {
+                const name = document.getElementById(`merit-${i}-name`)?.value || '';
+                const value = document.getElementById(`merit-${i}-value`)?.value || '';
+                if (name) {
+                    data.merits.push({ name, value });
+                }
+            }
+            
+            return data;
+        }
+
+        function restoreData(data) {
+            ['name', 'nature', 'clan', 'player', 'demeanor', 'generation', 'chronicle', 'role', 'sire'].forEach(field => {
+                if (data.profile && data.profile[field]) {
+                    document.getElementById(field).value = data.profile[field];
+                }
+            });
+            
+            if (data.attributes) Object.assign(values.attributes, data.attributes);
+            if (data.abilities) Object.assign(values.abilities, data.abilities);
+            if (data.virtues) Object.assign(values.virtues, data.virtues);
+            
+            if (data.disciplines) {
+                data.disciplines.forEach((disc, i) => {
+                    if (i < 6) {
+                        values.disciplines[i] = { name: disc.name, value: disc.value };
+                        const input = document.getElementById(`disciplines-${i}-input`);
+                        if (input) input.value = disc.name;
+                    }
+                });
+            }
+            
+            if (data.backgrounds) {
+                data.backgrounds.forEach((bg, i) => {
+                    if (i < 6) {
+                        values.backgrounds[i] = { name: bg.name, value: bg.value };
+                        const input = document.getElementById(`backgrounds-${i}-input`);
+                        if (input) input.value = bg.name;
+                    }
+                });
+            }
+            
+            if (data.merits) {
+                data.merits.forEach((merit, i) => {
+                    if (i < 12) {
+                        const nameInput = document.getElementById(`merit-${i}-name`);
+                        const valueInput = document.getElementById(`merit-${i}-value`);
+                        if (nameInput) nameInput.value = merit.name;
+                        if (valueInput) valueInput.value = merit.value;
+                    }
+                });
+            }
+            
+            values.willTemp = data.willTemp || 5;
+            values.willPerm = data.willPerm || 5;
+            values.bloodPool = data.bloodPool || 10;
+            values.humanity = data.humanity || 7;
+            values.health = data.health || Array(7).fill(0);
+            
+            document.getElementById('bloodSpend').value = data.bloodSpend || '';
+            document.getElementById('pathName').value = data.pathName || '';
+            document.getElementById('experience').value = data.experience || '0';
+            document.getElementById('notes').value = data.notes || '';
+            
+            setTimeout(() => {
+                document.querySelectorAll('.dots-container').forEach(container => {
+                    const firstDot = container.querySelector('.dot');
+                    if (firstDot) {
+                        const key = firstDot.dataset.key;
+                        if (key) {
+                            updateDotsDisplay(container, getValueByKey(key));
+                        }
+                    }
+                });
+                
+                for (let i = 0; i < 6; i++) {
+                    const discContainer = document.getElementById(`disciplines-${i}-dots`);
+                    if (discContainer) updateDotsDisplay(discContainer, values.disciplines[i]?.value || 0);
+                    const bgContainer = document.getElementById(`backgrounds-${i}-dots`);
+                    if (bgContainer) updateDotsDisplay(bgContainer, values.backgrounds[i]?.value || 0);
+                }
+                
+                updateDotsDisplay(document.getElementById('humanity-dots'), values.humanity);
+                updateDotsDisplay(document.getElementById('willTemp-dots'), values.willTemp);
+                updateDotsDisplay(document.getElementById('willPerm-dots'), values.willPerm);
+                updateDotsDisplay(document.getElementById('bloodPool-dots'), values.bloodPool);
+                updateHealthDisplay();
+            }, 10);
+        }
+
+        function saveCharacter() {
+            const data = collectData();
+            localStorage.setItem('vtmCharacter', JSON.stringify(data));
+            alert('Персонаж сохранён в браузере!');
+        }
+
+        function loadCharacter() {
+            const saved = localStorage.getItem('vtmCharacter');
+            if (saved) {
+                const data = JSON.parse(saved);
+                restoreData(data);
+                alert('Персонаж загружен!');
+            } else {
+                alert('Нет сохранённого персонажа.');
+            }
+        }
+
+        function newCharacter() {
+            if (confirm('Создать нового персонажа? Несохранённые данные будут потеряны.')) {
+                location.reload();
+            }
+        }
+
+        function exportToFile() {
+            const data = collectData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vtm_character_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importFromFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        restoreData(data);
+                        alert('Персонаж импортирован!');
+                    } catch (err) {
+                        alert('Ошибка при чтении файла.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // Запуск
+        init();
+    </script>
+</body>
+</html>
