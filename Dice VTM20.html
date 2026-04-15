@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎲 World of Darkness - Система кубов</title>
+    <title>🌑 World of Darkness - Система кубов</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
@@ -40,9 +40,183 @@
         .subtitle {
             text-align: center;
             color: #8a7b6b;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-style: italic;
             font-size: 1.1em;
+        }
+        
+        /* Индикатор персонажа */
+        .character-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(201, 179, 124, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .character-badge:hover {
+            background: rgba(201, 179, 124, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .character-icon {
+            font-size: 1.5em;
+        }
+        
+        .character-name {
+            font-size: 1.2em;
+            color: #c9b37c;
+        }
+        
+        .change-character {
+            font-size: 0.9em;
+            color: #8a7b6b;
+        }
+        
+        /* Модальное окно выбора персонажа */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(201, 179, 124, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: modalAppear 0.3s ease;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-title {
+            font-size: 2em;
+            color: #c9b37c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .character-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .character-option {
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .character-option.vampire {
+            background: rgba(180, 0, 0, 0.1);
+            border-color: rgba(180, 0, 0, 0.3);
+        }
+        
+        .character-option.vampire:hover {
+            background: rgba(180, 0, 0, 0.2);
+            border-color: #b40000;
+            transform: translateX(5px);
+        }
+        
+        .character-option.hunter {
+            background: rgba(255, 140, 0, 0.1);
+            border-color: rgba(255, 140, 0, 0.3);
+        }
+        
+        .character-option.hunter:hover {
+            background: rgba(255, 140, 0, 0.2);
+            border-color: #ff8c00;
+            transform: translateX(5px);
+        }
+        
+        .character-option.mage {
+            background: rgba(0, 100, 200, 0.1);
+            border-color: rgba(0, 100, 200, 0.3);
+        }
+        
+        .character-option.mage:hover {
+            background: rgba(0, 100, 200, 0.2);
+            border-color: #0064c8;
+            transform: translateX(5px);
+        }
+        
+        .option-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .option-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .vampire .option-title {
+            color: #ff4444;
+        }
+        
+        .hunter .option-title {
+            color: #ffa500;
+        }
+        
+        .mage .option-title {
+            color: #44aaff;
+        }
+        
+        .option-desc {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .close-modal {
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            color: #8a7b6b;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #c9b37c;
         }
         
         /* Ресурсы */
@@ -61,6 +235,7 @@
             padding: 20px;
             border: 1px solid rgba(201, 179, 124, 0.2);
             box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
         }
         
         .resource-header {
@@ -82,10 +257,6 @@
             color: #7eb8c9;
         }
         
-        .specialty-title {
-            color: #c9b37c;
-        }
-        
         .resource-value {
             font-size: 2em;
             font-weight: bold;
@@ -93,15 +264,18 @@
         }
         
         .dots-container {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
             margin-bottom: 15px;
         }
         
+        .dots-container.twenty {
+            grid-template-columns: repeat(10, 1fr);
+        }
+        
         .dot {
-            width: 32px;
-            height: 32px;
+            aspect-ratio: 1;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -115,8 +289,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 16px;
-            height: 16px;
+            width: 60%;
+            height: 60%;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(200,180,140,0.5));
             opacity: 0;
@@ -141,13 +315,32 @@
             box-shadow: 0 0 15px rgba(126, 184, 201, 0.4);
         }
         
-        .specialty-dot {
-            background: rgba(201, 179, 124, 0.1);
+        /* Динамические стили для Особенности */
+        .specialty-card.vampire .specialty-dot.filled {
+            border-color: #b40000;
+            box-shadow: 0 0 15px rgba(180, 0, 0, 0.4);
         }
         
-        .specialty-dot.filled {
-            border-color: #c9b37c;
-            box-shadow: 0 0 15px rgba(201, 179, 124, 0.4);
+        .specialty-card.hunter .specialty-dot.filled {
+            border-color: #ff8c00;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+        }
+        
+        .specialty-card.mage .specialty-dot.filled {
+            border-color: #0064c8;
+            box-shadow: 0 0 15px rgba(0, 100, 200, 0.4);
+        }
+        
+        .specialty-card.vampire .resource-title {
+            color: #ff4444;
+        }
+        
+        .specialty-card.hunter .resource-title {
+            color: #ffa500;
+        }
+        
+        .specialty-card.mage .resource-title {
+            color: #44aaff;
         }
         
         .resource-controls {
@@ -388,15 +581,35 @@
             transform: translateY(-2px);
         }
         
-        .action-btn.specialty {
-            border-color: #c9b37c;
-            color: #c9b37c;
+        /* Динамические стили для кнопки Особенности */
+        .action-btn.specialty.vampire {
+            border-color: #b40000;
+            color: #ff6666;
         }
         
-        .action-btn.specialty:not(:disabled):hover {
-            background: rgba(201, 179, 124, 0.15);
-            box-shadow: 0 0 20px rgba(201, 179, 124, 0.3);
-            transform: translateY(-2px);
+        .action-btn.specialty.vampire:not(:disabled):hover {
+            background: rgba(180, 0, 0, 0.15);
+            box-shadow: 0 0 20px rgba(180, 0, 0, 0.3);
+        }
+        
+        .action-btn.specialty.hunter {
+            border-color: #ff8c00;
+            color: #ffb366;
+        }
+        
+        .action-btn.specialty.hunter:not(:disabled):hover {
+            background: rgba(255, 140, 0, 0.15);
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+        }
+        
+        .action-btn.specialty.mage {
+            border-color: #0064c8;
+            color: #66b3ff;
+        }
+        
+        .action-btn.specialty.mage:not(:disabled):hover {
+            background: rgba(0, 100, 200, 0.15);
+            box-shadow: 0 0 20px rgba(0, 100, 200, 0.3);
         }
         
         .action-btn:disabled {
@@ -426,7 +639,7 @@
             border-radius: 10px;
             font-weight: bold;
             animation: slideIn 0.3s ease;
-            z-index: 1000;
+            z-index: 1001;
             border-left: 5px solid;
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
@@ -547,13 +760,49 @@
             .action-btn {
                 min-width: 100%;
             }
+            
+            .dots-container {
+                gap: 3px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Модальное окно выбора персонажа -->
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <div class="modal-title">Кто вы в Мире Тьмы?</div>
+            <div class="character-options">
+                <div class="character-option vampire" onclick="selectCharacter('vampire')">
+                    <div class="option-icon">🩸</div>
+                    <div class="option-title">Вампир</div>
+                    <div class="option-desc">Дитя Ночи, проклятый кровью</div>
+                </div>
+                <div class="character-option hunter" onclick="selectCharacter('hunter')">
+                    <div class="option-icon">⚔️</div>
+                    <div class="option-title">Охотник</div>
+                    <div class="option-desc">Смертный, восставший против тьмы</div>
+                </div>
+                <div class="character-option mage" onclick="selectCharacter('mage')">
+                    <div class="option-icon">🔮</div>
+                    <div class="option-title">Маг</div>
+                    <div class="option-desc">Пробуждённый, меняющий реальность</div>
+                </div>
+            </div>
+            <div class="close-modal" onclick="closeModal()">Продолжить без выбора</div>
+        </div>
+    </div>
+
     <div class="container">
         <h1>🌑 WORLD OF DARKNESS</h1>
         <div class="subtitle">Storyteller System • D10 Dice Pool</div>
+        
+        <!-- Индикатор персонажа -->
+        <div class="character-badge" onclick="openModal()">
+            <span class="character-icon" id="characterIcon">❓</span>
+            <span class="character-name" id="characterName">Выберите персонажа</span>
+            <span class="change-character">(изменить)</span>
+        </div>
         
         <!-- Панель ресурсов -->
         <div class="resources-panel">
@@ -575,20 +824,21 @@
                 </div>
             </div>
             
-            <!-- Особенность -->
-            <div class="resource-card">
+            <!-- Особенность (динамическая) -->
+            <div class="resource-card specialty-card" id="specialtyCard">
                 <div class="resource-header">
-                    <div class="resource-title specialty-title">
-                        <span>✨ Особенность</span>
+                    <div class="resource-title" id="specialtyTitle">
+                        <span id="specialtyIcon">✨</span>
+                        <span id="specialtyName">Особенность</span>
                     </div>
-                    <div class="resource-value" id="specialtyValue">10</div>
+                    <div class="resource-value" id="specialtyValue">20</div>
                 </div>
-                <div class="dots-container" id="specialtyDots"></div>
+                <div class="dots-container twenty" id="specialtyDots"></div>
                 <div class="resource-controls">
                     <button class="resource-btn" onclick="adjustSpecialty(-1)" id="specialtyMinus">−</button>
                     <button class="resource-btn" onclick="adjustSpecialty(1)" id="specialtyPlus">+</button>
                 </div>
-                <div style="text-align: center; margin-top: 10px; color: #c9b37c; font-size: 0.9em; opacity: 0.8;">
+                <div style="text-align: center; margin-top: 10px; font-size: 0.9em; opacity: 0.8;" id="specialtyDesc">
                     Переброс одного куба
                 </div>
             </div>
@@ -624,8 +874,8 @@
                     <span id="willpowerUsedText" class="action-used"></span>
                 </button>
                 <button class="action-btn specialty" id="spendSpecialtyBtn" onclick="spendSpecialty()" disabled>
-                    <span>✨ Использовать Особенность</span>
-                    <span class="action-cost">-1 Особенность → Переброс</span>
+                    <span id="specialtyActionText">✨ Использовать Особенность</span>
+                    <span class="action-cost" id="specialtyActionCost">-1 Особенность → Переброс</span>
                 </button>
             </div>
         </div>
@@ -651,18 +901,96 @@
     <script>
         // Состояние игры
         let willpower = 10;
-        let specialty = 10;
+        let specialty = 20;
+        let maxSpecialty = 20;
+        let currentCharacter = null;
         let currentRolls = [];
         let currentSuccesses = 0;
         let willpowerUsedThisRoll = false;
         let history = [];
         const MAX_HISTORY = 15;
         
+        // Конфигурация персонажей
+        const characters = {
+            vampire: {
+                name: 'Вампир',
+                icon: '🩸',
+                specialtyName: 'Кровь',
+                specialtyIcon: '🩸',
+                specialtyDesc: 'Переброс одного куба',
+                className: 'vampire'
+            },
+            hunter: {
+                name: 'Охотник',
+                icon: '⚔️',
+                specialtyName: 'Добродетель',
+                specialtyIcon: '⚔️',
+                specialtyDesc: 'Переброс одного куба',
+                className: 'hunter'
+            },
+            mage: {
+                name: 'Маг',
+                icon: '🔮',
+                specialtyName: 'Квинтэссенция',
+                specialtyIcon: '🔮',
+                specialtyDesc: 'Переброс одного куба',
+                className: 'mage'
+            }
+        };
+        
         // Инициализация
         function init() {
             updateWillpowerDisplay();
             updateSpecialtyDisplay();
             updateHistoryDisplay();
+            
+            // Показываем модальное окно при первом открытии
+            if (!localStorage.getItem('characterSelected')) {
+                setTimeout(() => openModal(), 100);
+            }
+        }
+        
+        // Открытие модального окна
+        function openModal() {
+            document.getElementById('characterModal').classList.add('active');
+        }
+        
+        // Закрытие модального окна
+        function closeModal() {
+            document.getElementById('characterModal').classList.remove('active');
+            localStorage.setItem('characterSelected', 'true');
+        }
+        
+        // Выбор персонажа
+        function selectCharacter(type) {
+            currentCharacter = type;
+            const char = characters[type];
+            
+            // Обновление бейджа
+            document.getElementById('characterIcon').textContent = char.icon;
+            document.getElementById('characterName').textContent = char.name;
+            
+            // Обновление карточки Особенности
+            const card = document.getElementById('specialtyCard');
+            card.className = `resource-card specialty-card ${char.className}`;
+            
+            document.getElementById('specialtyIcon').textContent = char.specialtyIcon;
+            document.getElementById('specialtyName').textContent = char.specialtyName;
+            document.getElementById('specialtyDesc').textContent = char.specialtyDesc;
+            
+            // Обновление кнопки действия
+            const actionBtn = document.getElementById('spendSpecialtyBtn');
+            actionBtn.className = `action-btn specialty ${char.className}`;
+            document.getElementById('specialtyActionText').textContent = `${char.specialtyIcon} Использовать ${char.specialtyName}`;
+            document.getElementById('specialtyActionCost').textContent = `-1 ${char.specialtyName} → Переброс`;
+            
+            // Обновление точек
+            updateSpecialtyDisplay();
+            
+            closeModal();
+            showNotification(`Вы выбрали: ${char.name}`, 'info');
+            localStorage.setItem('characterSelected', 'true');
+            localStorage.setItem('characterType', type);
         }
         
         // Обновление отображения Воли
@@ -692,7 +1020,9 @@
             const dotsContainer = document.getElementById('specialtyDots');
             dotsContainer.innerHTML = '';
             
-            for (let i = 0; i < 10; i++) {
+            const charClass = currentCharacter ? characters[currentCharacter].className : '';
+            
+            for (let i = 0; i < maxSpecialty; i++) {
                 const dot = document.createElement('div');
                 dot.className = `dot specialty-dot ${i < specialty ? 'filled' : ''}`;
                 dot.onclick = () => setSpecialty(i + 1);
@@ -700,7 +1030,7 @@
             }
             
             document.getElementById('specialtyMinus').disabled = specialty <= 0;
-            document.getElementById('specialtyPlus').disabled = specialty >= 10;
+            document.getElementById('specialtyPlus').disabled = specialty >= maxSpecialty;
             
             updateActionButtons();
         }
@@ -713,7 +1043,7 @@
         
         // Установка значения Особенности
         function setSpecialty(value) {
-            specialty = Math.max(0, Math.min(10, value));
+            specialty = Math.max(0, Math.min(maxSpecialty, value));
             updateSpecialtyDisplay();
         }
         
@@ -771,6 +1101,7 @@
             
             document.getElementById('resultSection').style.display = 'block';
             
+            const charName = currentCharacter ? characters[currentCharacter].name : '';
             addToHistory(`Бросок ${validCount}D10`, currentSuccesses, currentRolls);
         }
         
@@ -803,11 +1134,9 @@
             const willpowerBtn = document.getElementById('spendWillpowerBtn');
             const specialtyBtn = document.getElementById('spendSpecialtyBtn');
             
-            // Воля: доступна если есть очки, есть бросок, и ещё не использовалась
             const canUseWillpower = willpower > 0 && currentRolls.length > 0 && !willpowerUsedThisRoll;
             willpowerBtn.disabled = !canUseWillpower;
             
-            // Особенность: доступна если есть очки, есть бросок и есть кубы для переброса
             const hasRerollableDice = currentRolls.some(roll => roll.type === 'failure');
             const canUseSpecialty = specialty > 0 && currentRolls.length > 0 && hasRerollableDice;
             specialtyBtn.disabled = !canUseSpecialty;
@@ -832,7 +1161,7 @@
             addToHistory('💫 Использование Воли', currentSuccesses, currentRolls, '+1 успех');
         }
         
-        // Использовать Особенность (переброс одного неудачного куба)
+        // Использовать Особенность
         function spendSpecialty() {
             if (specialty <= 0 || currentRolls.length === 0) return;
             
@@ -864,13 +1193,16 @@
             displayResults();
             updateActionButtons();
             
+            const specialtyName = currentCharacter ? characters[currentCharacter].specialtyName : 'Особенность';
+            const specialtyIcon = currentCharacter ? characters[currentCharacter].specialtyIcon : '✨';
+            
             if (evaluation.type === 'failure') {
                 showNotification('Неудача! Переброс не помог', 'failure');
-                addToHistory('✨ Исп. Особенности', currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (неудача)`);
+                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (неудача)`);
             } else {
                 const successText = evaluation.type === 'critical' ? 'Критический успех!' : 'Успех!';
                 showNotification(`${successText} Переброс удачен!`, 'success');
-                addToHistory('✨ Исп. Особенности', currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (успех)`);
+                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (успех)`);
             }
         }
         
@@ -938,7 +1270,16 @@
             updateHistoryDisplay();
         }
         
+        // Загрузка сохранённого персонажа
+        function loadSavedCharacter() {
+            const savedType = localStorage.getItem('characterType');
+            if (savedType && characters[savedType]) {
+                selectCharacter(savedType);
+            }
+        }
+        
         // Запуск
+        loadSavedCharacter();
         init();
     </script>
 </body>
