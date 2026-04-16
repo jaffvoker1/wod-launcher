@@ -45,19 +45,23 @@
             font-size: 1.1em;
         }
         
-        /* Индикатор персонажа */
+        /* Индикатор персонажа и правил */
+        .top-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
         .character-badge {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
             padding: 10px 20px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 30px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
             border: 1px solid rgba(201, 179, 124, 0.3);
             cursor: pointer;
             transition: all 0.3s;
@@ -77,12 +81,30 @@
             color: #c9b37c;
         }
         
-        .change-character {
-            font-size: 0.9em;
-            color: #8a7b6b;
+        .rules-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            border: 1px solid rgba(201, 179, 124, 0.3);
         }
         
-        /* Модальное окно выбора персонажа */
+        .rules-icon {
+            font-size: 1.2em;
+        }
+        
+        .rules-text {
+            color: #ff6b6b;
+            font-size: 0.95em;
+        }
+        
+        .rules-text.inactive {
+            color: #6a6a8a;
+        }
+        
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -105,7 +127,7 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             padding: 40px;
             border-radius: 20px;
-            max-width: 500px;
+            max-width: 550px;
             width: 90%;
             border: 1px solid rgba(201, 179, 124, 0.3);
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -134,6 +156,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-bottom: 30px;
         }
         
         .character-option {
@@ -189,34 +212,100 @@
             margin-bottom: 5px;
         }
         
-        .vampire .option-title {
-            color: #ff4444;
-        }
-        
-        .hunter .option-title {
-            color: #ffa500;
-        }
-        
-        .mage .option-title {
-            color: #44aaff;
-        }
+        .vampire .option-title { color: #ff4444; }
+        .hunter .option-title { color: #ffa500; }
+        .mage .option-title { color: #44aaff; }
         
         .option-desc {
             font-size: 0.9em;
             opacity: 0.8;
         }
         
+        /* Переключатель критического провала */
+        .rule-toggle-section {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(201, 179, 124, 0.15);
+        }
+        
+        .rule-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        .rule-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .rule-icon {
+            font-size: 2em;
+        }
+        
+        .rule-text {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .rule-text.active {
+            color: #ff6b6b;
+        }
+        
+        .rule-desc {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .toggle-switch {
+            width: 60px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(201, 179, 124, 0.3);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+        }
+        
+        .toggle-slider {
+            width: 24px;
+            height: 24px;
+            background: #6a6a8a;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            background: #ff6b6b;
+            left: 33px;
+        }
+        
         .close-modal {
             margin-top: 20px;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
-            color: #8a7b6b;
+            color: #c9b37c;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            border: 1px solid rgba(201, 179, 124, 0.3);
+            border-radius: 10px;
         }
         
         .close-modal:hover {
-            color: #c9b37c;
+            background: rgba(201, 179, 124, 0.1);
         }
         
         /* Ресурсы */
@@ -315,7 +404,6 @@
             box-shadow: 0 0 15px rgba(126, 184, 201, 0.4);
         }
         
-        /* Динамические стили для Особенности */
         .specialty-card.vampire .specialty-dot.filled {
             border-color: #b40000;
             box-shadow: 0 0 15px rgba(180, 0, 0, 0.4);
@@ -331,17 +419,9 @@
             box-shadow: 0 0 15px rgba(0, 100, 200, 0.4);
         }
         
-        .specialty-card.vampire .resource-title {
-            color: #ff4444;
-        }
-        
-        .specialty-card.hunter .resource-title {
-            color: #ffa500;
-        }
-        
-        .specialty-card.mage .resource-title {
-            color: #44aaff;
-        }
+        .specialty-card.vampire .resource-title { color: #ff4444; }
+        .specialty-card.hunter .resource-title { color: #ffa500; }
+        .specialty-card.mage .resource-title { color: #44aaff; }
         
         .resource-controls {
             display: flex;
@@ -377,7 +457,7 @@
             transform: none;
         }
         
-        /* Секция броска D10 */
+        /* Секция броска */
         .dice-section {
             background: rgba(15, 15, 25, 0.5);
             padding: 25px;
@@ -451,7 +531,7 @@
             transform: translateY(-2px);
         }
         
-        /* Результат броска */
+        /* Результат */
         .result-section {
             background: rgba(15, 15, 25, 0.5);
             padding: 25px;
@@ -474,14 +554,25 @@
             height: 65px;
             border-radius: 12px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
             background: rgba(0, 0, 0, 0.4);
             border: 2px solid;
             position: relative;
             transition: all 0.3s;
+        }
+        
+        .die-result .die-value {
+            line-height: 1;
+        }
+        
+        .die-result .die-modifier {
+            font-size: 0.5em;
+            opacity: 0.8;
+            margin-top: 2px;
         }
         
         .die-result.success {
@@ -502,12 +593,40 @@
         .die-result.failure {
             background: rgba(40, 40, 50, 0.4);
             border-color: #5a5a6a;
-            opacity: 0.6;
+            opacity: 0.7;
             color: #8a8a9a;
+        }
+        
+        .die-result.botch {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: #ff4444;
+            color: #ff8888;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
         }
         
         .die-result.rerolled {
             animation: rerollAnimation 0.6s ease;
+        }
+        
+        .die-result.used {
+            opacity: 0.5;
+            position: relative;
+        }
+        
+        .die-result.used::after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #4a9e7b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
         }
         
         @keyframes criticalPulse {
@@ -534,6 +653,12 @@
             font-size: 1.3em;
             color: #c9b37c;
             font-weight: bold;
+        }
+        
+        .botch-info {
+            color: #ff6b6b;
+            font-size: 0.9em;
+            margin-left: 10px;
         }
         
         .willpower-used-indicator {
@@ -581,7 +706,6 @@
             transform: translateY(-2px);
         }
         
-        /* Динамические стили для кнопки Особенности */
         .action-btn.specialty.vampire {
             border-color: #b40000;
             color: #ff6666;
@@ -662,6 +786,12 @@
             border-left-color: #7eb8c9;
         }
         
+        .notification.warning {
+            background: rgba(180, 100, 0, 0.9);
+            color: #ffe0b0;
+            border-left-color: #ffa500;
+        }
+        
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -736,42 +866,23 @@
             margin: 0 10px;
         }
         
-        /* Адаптивность */
         @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8em;
-            }
-            
-            .d10-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .die-result {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5em;
-            }
-            
-            .action-btn {
-                min-width: 100%;
-            }
-            
-            .dots-container {
-                gap: 3px;
-            }
+            .container { padding: 15px; }
+            h1 { font-size: 1.8em; }
+            .top-panel { flex-direction: column; align-items: stretch; }
+            .d10-header { flex-direction: column; gap: 15px; }
+            .die-result { width: 50px; height: 50px; font-size: 1.5em; }
+            .action-btn { min-width: 100%; }
+            .dots-container { gap: 3px; }
         }
     </style>
 </head>
 <body>
-    <!-- Модальное окно выбора персонажа -->
+    <!-- Модальное окно -->
     <div class="modal" id="characterModal">
         <div class="modal-content">
             <div class="modal-title">Кто вы в Мире Тьмы?</div>
+            
             <div class="character-options">
                 <div class="character-option vampire" onclick="selectCharacter('vampire')">
                     <div class="option-icon">🩸</div>
@@ -789,7 +900,24 @@
                     <div class="option-desc">Пробуждённый, меняющий реальность</div>
                 </div>
             </div>
-            <div class="close-modal" onclick="closeModal()">Продолжить без выбора</div>
+            
+            <!-- Переключатель критического провала -->
+            <div class="rule-toggle-section">
+                <div class="rule-toggle" onclick="toggleBotchRule()">
+                    <div class="rule-info">
+                        <span class="rule-icon">💀</span>
+                        <div>
+                            <div class="rule-text" id="ruleText">1 — критический провал</div>
+                            <div class="rule-desc">Каждая 1 отнимает 1 успех (нельзя перебросить)</div>
+                        </div>
+                    </div>
+                    <div class="toggle-switch" id="toggleSwitch">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="close-modal" onclick="closeModal()">Продолжить</div>
         </div>
     </div>
 
@@ -797,16 +925,21 @@
         <h1>🌑 WORLD OF DARKNESS</h1>
         <div class="subtitle">Storyteller System • D10 Dice Pool</div>
         
-        <!-- Индикатор персонажа -->
-        <div class="character-badge" onclick="openModal()">
-            <span class="character-icon" id="characterIcon">❓</span>
-            <span class="character-name" id="characterName">Выберите персонажа</span>
-            <span class="change-character">(изменить)</span>
+        <!-- Верхняя панель -->
+        <div class="top-panel">
+            <div class="character-badge" onclick="openModal()">
+                <span class="character-icon" id="characterIcon">❓</span>
+                <span class="character-name" id="characterName">Выберите персонажа</span>
+            </div>
+            
+            <div class="rules-badge" id="rulesBadge" onclick="openModal()" style="cursor: pointer;">
+                <span class="rules-icon">💀</span>
+                <span class="rules-text" id="rulesBadgeText">1 — критический провал</span>
+            </div>
         </div>
         
-        <!-- Панель ресурсов -->
+        <!-- Ресурсы -->
         <div class="resources-panel">
-            <!-- Воля -->
             <div class="resource-card">
                 <div class="resource-header">
                     <div class="resource-title willpower-title">
@@ -824,7 +957,6 @@
                 </div>
             </div>
             
-            <!-- Особенность (динамическая) -->
             <div class="resource-card specialty-card" id="specialtyCard">
                 <div class="resource-header">
                     <div class="resource-title" id="specialtyTitle">
@@ -844,7 +976,7 @@
             </div>
         </div>
         
-        <!-- Секция броска D10 -->
+        <!-- Бросок -->
         <div class="dice-section">
             <div class="d10-header">
                 <div class="d10-icon">🎲</div>
@@ -856,17 +988,17 @@
             </div>
         </div>
         
-        <!-- Результат броска -->
+        <!-- Результат -->
         <div class="result-section" id="resultSection" style="display: none;">
             <div class="dice-results" id="diceResults"></div>
             <div class="success-summary">
                 <div>
                     Успехов: <span class="success-count" id="successCount">0</span>
+                    <span id="botchInfo" class="botch-info"></span>
                     <span id="willpowerUsedIndicator" class="willpower-used-indicator"></span>
                 </div>
             </div>
             
-            <!-- Кнопки действий -->
             <div class="action-buttons">
                 <button class="action-btn willpower" id="spendWillpowerBtn" onclick="spendWillpower()" disabled>
                     <span>💫 Использовать Волю</span>
@@ -895,82 +1027,95 @@
             <span>⚡ 2,4,6,8 = Успех</span> •
             <span>✨ 10 = Двойной успех</span> •
             <span>❌ 1,3,5,7,9 = Неудача</span>
+            <span id="botchHelpText"></span>
         </div>
     </div>
 
     <script>
-        // Состояние игры
+        // Состояние
         let willpower = 10;
         let specialty = 20;
         let maxSpecialty = 20;
         let currentCharacter = null;
+        let botchRule = false; // Правило критического провала
         let currentRolls = [];
         let currentSuccesses = 0;
+        let botchCount = 0;
         let willpowerUsedThisRoll = false;
+        let specialtyUsed = false;
         let history = [];
         const MAX_HISTORY = 15;
         
-        // Конфигурация персонажей
         const characters = {
-            vampire: {
-                name: 'Вампир',
-                icon: '🩸',
-                specialtyName: 'Кровь',
-                specialtyIcon: '🩸',
-                specialtyDesc: 'Переброс одного куба',
-                className: 'vampire'
-            },
-            hunter: {
-                name: 'Охотник',
-                icon: '⚔️',
-                specialtyName: 'Добродетель',
-                specialtyIcon: '⚔️',
-                specialtyDesc: 'Переброс одного куба',
-                className: 'hunter'
-            },
-            mage: {
-                name: 'Маг',
-                icon: '🔮',
-                specialtyName: 'Квинтэссенция',
-                specialtyIcon: '🔮',
-                specialtyDesc: 'Переброс одного куба',
-                className: 'mage'
-            }
+            vampire: { name: 'Вампир', icon: '🩸', specialtyName: 'Кровь', specialtyIcon: '🩸', specialtyDesc: 'Переброс одного куба', className: 'vampire' },
+            hunter: { name: 'Охотник', icon: '⚔️', specialtyName: 'Добродетель', specialtyIcon: '⚔️', specialtyDesc: 'Переброс одного куба', className: 'hunter' },
+            mage: { name: 'Маг', icon: '🔮', specialtyName: 'Квинтэссенция', specialtyIcon: '🔮', specialtyDesc: 'Переброс одного куба', className: 'mage' }
         };
         
-        // Инициализация
         function init() {
             updateWillpowerDisplay();
             updateSpecialtyDisplay();
             updateHistoryDisplay();
+            updateBotchUI();
             
-            // Показываем модальное окно при первом открытии
             if (!localStorage.getItem('characterSelected')) {
                 setTimeout(() => openModal(), 100);
             }
         }
         
-        // Открытие модального окна
         function openModal() {
             document.getElementById('characterModal').classList.add('active');
+            updateToggleSwitch();
         }
         
-        // Закрытие модального окна
         function closeModal() {
             document.getElementById('characterModal').classList.remove('active');
             localStorage.setItem('characterSelected', 'true');
+            saveSettings();
         }
         
-        // Выбор персонажа
+        function toggleBotchRule() {
+            botchRule = !botchRule;
+            updateToggleSwitch();
+            updateBotchUI();
+            saveSettings();
+        }
+        
+        function updateToggleSwitch() {
+            const toggleSwitch = document.getElementById('toggleSwitch');
+            const ruleText = document.getElementById('ruleText');
+            
+            if (botchRule) {
+                toggleSwitch.classList.add('active');
+                ruleText.classList.add('active');
+            } else {
+                toggleSwitch.classList.remove('active');
+                ruleText.classList.remove('active');
+            }
+        }
+        
+        function updateBotchUI() {
+            const badge = document.getElementById('rulesBadgeText');
+            const helpText = document.getElementById('botchHelpText');
+            
+            if (botchRule) {
+                badge.textContent = '1 — критический провал (вкл)';
+                badge.style.color = '#ff6b6b';
+                helpText.innerHTML = '• <span style="color: #ff6b6b;">💀 1 = -1 успех</span>';
+            } else {
+                badge.textContent = '1 — критический провал (выкл)';
+                badge.style.color = '#6a6a8a';
+                helpText.innerHTML = '';
+            }
+        }
+        
         function selectCharacter(type) {
             currentCharacter = type;
             const char = characters[type];
             
-            // Обновление бейджа
             document.getElementById('characterIcon').textContent = char.icon;
             document.getElementById('characterName').textContent = char.name;
             
-            // Обновление карточки Особенности
             const card = document.getElementById('specialtyCard');
             card.className = `resource-card specialty-card ${char.className}`;
             
@@ -978,22 +1123,31 @@
             document.getElementById('specialtyName').textContent = char.specialtyName;
             document.getElementById('specialtyDesc').textContent = char.specialtyDesc;
             
-            // Обновление кнопки действия
             const actionBtn = document.getElementById('spendSpecialtyBtn');
             actionBtn.className = `action-btn specialty ${char.className}`;
             document.getElementById('specialtyActionText').textContent = `${char.specialtyIcon} Использовать ${char.specialtyName}`;
             document.getElementById('specialtyActionCost').textContent = `-1 ${char.specialtyName} → Переброс`;
             
-            // Обновление точек
             updateSpecialtyDisplay();
             
-            closeModal();
             showNotification(`Вы выбрали: ${char.name}`, 'info');
             localStorage.setItem('characterSelected', 'true');
             localStorage.setItem('characterType', type);
+            saveSettings();
         }
         
-        // Обновление отображения Воли
+        function saveSettings() {
+            localStorage.setItem('botchRule', botchRule);
+        }
+        
+        function loadSettings() {
+            const saved = localStorage.getItem('botchRule');
+            if (saved !== null) {
+                botchRule = saved === 'true';
+            }
+            updateBotchUI();
+        }
+        
         function updateWillpowerDisplay() {
             document.getElementById('willpowerValue').textContent = willpower;
             
@@ -1013,14 +1167,11 @@
             updateActionButtons();
         }
         
-        // Обновление отображения Особенности
         function updateSpecialtyDisplay() {
             document.getElementById('specialtyValue').textContent = specialty;
             
             const dotsContainer = document.getElementById('specialtyDots');
             dotsContainer.innerHTML = '';
-            
-            const charClass = currentCharacter ? characters[currentCharacter].className : '';
             
             for (let i = 0; i < maxSpecialty; i++) {
                 const dot = document.createElement('div');
@@ -1035,43 +1186,34 @@
             updateActionButtons();
         }
         
-        // Установка значения Воли
         function setWillpower(value) {
             willpower = Math.max(0, Math.min(10, value));
             updateWillpowerDisplay();
         }
         
-        // Установка значения Особенности
         function setSpecialty(value) {
             specialty = Math.max(0, Math.min(maxSpecialty, value));
             updateSpecialtyDisplay();
         }
         
-        // Изменение Воли
-        function adjustWillpower(delta) {
-            setWillpower(willpower + delta);
-        }
+        function adjustWillpower(delta) { setWillpower(willpower + delta); }
+        function adjustSpecialty(delta) { setSpecialty(specialty + delta); }
         
-        // Изменение Особенности
-        function adjustSpecialty(delta) {
-            setSpecialty(specialty + delta);
-        }
-        
-        // Проверка результата броска D10
         function evaluateDie(value) {
-            if (value === 10) return { type: 'critical', successes: 2 };
-            if (value % 2 === 0) return { type: 'success', successes: 1 };
-            return { type: 'failure', successes: 0 };
+            if (value === 10) return { type: 'critical', successes: 2, isBotch: false };
+            if (value % 2 === 0) return { type: 'success', successes: 1, isBotch: false };
+            if (value === 1 && botchRule) return { type: 'botch', successes: -1, isBotch: true };
+            return { type: 'failure', successes: 0, isBotch: false };
         }
         
-        // Сброс состояния броска
         function resetRollState() {
             willpowerUsedThisRoll = false;
+            specialtyUsed = false;
             document.getElementById('willpowerUsedIndicator').textContent = '';
             document.getElementById('willpowerUsedText').textContent = '';
+            document.getElementById('botchInfo').textContent = '';
         }
         
-        // Бросок D10
         function rollD10() {
             const count = parseInt(document.getElementById('diceCount').value) || 5;
             const validCount = Math.max(1, Math.min(30, count));
@@ -1081,6 +1223,7 @@
             
             currentRolls = [];
             currentSuccesses = 0;
+            botchCount = 0;
             
             for (let i = 0; i < validCount; i++) {
                 const roll = Math.floor(Math.random() * 10) + 1;
@@ -1090,10 +1233,13 @@
                     value: roll,
                     type: evaluation.type,
                     successes: evaluation.successes,
-                    rerolled: false
+                    isBotch: evaluation.isBotch,
+                    rerolled: false,
+                    canReroll: !evaluation.isBotch && evaluation.type === 'failure'
                 });
                 
                 currentSuccesses += evaluation.successes;
+                if (evaluation.isBotch) botchCount++;
             }
             
             displayResults();
@@ -1102,34 +1248,46 @@
             document.getElementById('resultSection').style.display = 'block';
             
             const charName = currentCharacter ? characters[currentCharacter].name : '';
-            addToHistory(`Бросок ${validCount}D10`, currentSuccesses, currentRolls);
+            addToHistory(`Бросок ${validCount}D10`, currentSuccesses, currentRolls, botchCount);
         }
         
-        // Отображение результатов
         function displayResults() {
             const container = document.getElementById('diceResults');
             container.innerHTML = '';
             
             currentRolls.forEach((roll) => {
                 const dieElement = document.createElement('div');
-                dieElement.className = `die-result ${roll.type} ${roll.rerolled ? 'rerolled' : ''}`;
-                dieElement.textContent = roll.value;
+                let className = `die-result ${roll.type}`;
+                if (roll.rerolled) className += ' rerolled';
+                dieElement.className = className;
                 
-                if (roll.type === 'critical') {
-                    dieElement.title = 'Критический успех! (+2)';
-                } else if (roll.type === 'success') {
-                    dieElement.title = 'Успех! (+1)';
-                } else {
-                    dieElement.title = 'Неудача';
-                }
+                let modifier = '';
+                if (roll.type === 'critical') modifier = '+2';
+                else if (roll.type === 'success') modifier = '+1';
+                else if (roll.type === 'botch') modifier = '-1';
+                
+                dieElement.innerHTML = `
+                    <div class="die-value">${roll.value}</div>
+                    ${modifier ? `<div class="die-modifier">${modifier}</div>` : ''}
+                `;
+                
+                if (roll.type === 'critical') dieElement.title = 'Критический успех! (+2)';
+                else if (roll.type === 'success') dieElement.title = 'Успех! (+1)';
+                else if (roll.type === 'botch') dieElement.title = 'Критический провал! (-1)';
+                else dieElement.title = 'Неудача';
                 
                 container.appendChild(dieElement);
             });
             
             document.getElementById('successCount').textContent = currentSuccesses;
+            
+            if (botchCount > 0) {
+                document.getElementById('botchInfo').textContent = `(провалов: ${botchCount}, -${botchCount})`;
+            } else {
+                document.getElementById('botchInfo').textContent = '';
+            }
         }
         
-        // Обновление кнопок действий
         function updateActionButtons() {
             const willpowerBtn = document.getElementById('spendWillpowerBtn');
             const specialtyBtn = document.getElementById('spendSpecialtyBtn');
@@ -1137,12 +1295,11 @@
             const canUseWillpower = willpower > 0 && currentRolls.length > 0 && !willpowerUsedThisRoll;
             willpowerBtn.disabled = !canUseWillpower;
             
-            const hasRerollableDice = currentRolls.some(roll => roll.type === 'failure');
+            const hasRerollableDice = currentRolls.some(roll => roll.canReroll && roll.type === 'failure');
             const canUseSpecialty = specialty > 0 && currentRolls.length > 0 && hasRerollableDice;
             specialtyBtn.disabled = !canUseSpecialty;
         }
         
-        // Использовать Волю
         function spendWillpower() {
             if (willpower <= 0 || currentRolls.length === 0 || willpowerUsedThisRoll) return;
             
@@ -1158,17 +1315,23 @@
             document.getElementById('willpowerUsedText').textContent = '✓ Использована';
             
             showNotification('Воля использована! +1 успех', 'success');
-            addToHistory('💫 Использование Воли', currentSuccesses, currentRolls, '+1 успех');
+            addToHistory('💫 Использование Воли', currentSuccesses, currentRolls, botchCount, '+1 успех');
         }
         
-        // Использовать Особенность
         function spendSpecialty() {
             if (specialty <= 0 || currentRolls.length === 0) return;
             
-            const failureIndex = currentRolls.findIndex(roll => roll.type === 'failure');
+            // Ищем только неудачные кубы, которые НЕ являются провалами (1)
+            const failureIndex = currentRolls.findIndex(roll => 
+                roll.type === 'failure' && roll.canReroll && !roll.isBotch
+            );
             
             if (failureIndex === -1) {
-                showNotification('Нет кубов для переброса!', 'failure');
+                if (currentRolls.some(r => r.isBotch)) {
+                    showNotification('Кубы с 1 нельзя перебросить!', 'warning');
+                } else {
+                    showNotification('Нет кубов для переброса!', 'failure');
+                }
                 return;
             }
             
@@ -1181,14 +1344,21 @@
             const newValue = Math.floor(Math.random() * 10) + 1;
             const evaluation = evaluateDie(newValue);
             
+            currentSuccesses -= oldRoll.successes;
+            
             currentRolls[failureIndex] = {
                 value: newValue,
                 type: evaluation.type,
                 successes: evaluation.successes,
-                rerolled: true
+                isBotch: evaluation.isBotch,
+                rerolled: true,
+                canReroll: false
             };
             
-            currentSuccesses = currentRolls.reduce((sum, roll) => sum + roll.successes, 0);
+            currentSuccesses += evaluation.successes;
+            
+            // Пересчёт провалов
+            botchCount = currentRolls.filter(r => r.isBotch).length;
             
             displayResults();
             updateActionButtons();
@@ -1196,17 +1366,19 @@
             const specialtyName = currentCharacter ? characters[currentCharacter].specialtyName : 'Особенность';
             const specialtyIcon = currentCharacter ? characters[currentCharacter].specialtyIcon : '✨';
             
-            if (evaluation.type === 'failure') {
-                showNotification('Неудача! Переброс не помог', 'failure');
-                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (неудача)`);
+            if (evaluation.type === 'failure' || evaluation.type === 'botch') {
+                const msg = evaluation.isBotch ? 'Критический провал!' : 'Неудача!';
+                showNotification(`${msg} Переброс не помог`, 'failure');
+                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, botchCount, 
+                    `Переброс ${oldValue}→${newValue} (неудача)`);
             } else {
                 const successText = evaluation.type === 'critical' ? 'Критический успех!' : 'Успех!';
                 showNotification(`${successText} Переброс удачен!`, 'success');
-                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, `Переброс ${oldValue}→${newValue} (успех)`);
+                addToHistory(`${specialtyIcon} Исп. ${specialtyName}`, currentSuccesses, currentRolls, botchCount,
+                    `Переброс ${oldValue}→${newValue} (успех)`);
             }
         }
         
-        // Показ уведомления
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -1214,37 +1386,38 @@
             
             document.body.appendChild(notification);
             
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
+            setTimeout(() => notification.remove(), 3000);
         }
         
-        // Добавление в историю
-        function addToHistory(action, successes, rolls, note = '') {
+        function addToHistory(action, successes, rolls, botches = 0, note = '') {
             const diceResults = rolls.map(r => {
                 if (r.type === 'critical') return `${r.value}✨`;
                 if (r.type === 'success') return `${r.value}✓`;
+                if (r.type === 'botch') return `${r.value}💀`;
                 return `${r.value}`;
             }).join(' ');
+            
+            let botchText = '';
+            if (botchRule && botches > 0) {
+                botchText = ` [пр:${botches}]`;
+            }
             
             const record = {
                 action: action,
                 successes: successes,
                 diceResults: diceResults,
                 note: note,
+                botches: botches,
                 timestamp: new Date().toLocaleTimeString()
             };
             
             history.unshift(record);
             
-            if (history.length > MAX_HISTORY) {
-                history.pop();
-            }
+            if (history.length > MAX_HISTORY) history.pop();
             
             updateHistoryDisplay();
         }
         
-        // Обновление отображения истории
         function updateHistoryDisplay() {
             const historyElement = document.getElementById('historyList');
             
@@ -1255,22 +1428,21 @@
             
             historyElement.innerHTML = history.map((record) => {
                 const noteText = record.note ? ` (${record.note})` : '';
+                const botchText = botchRule && record.botches > 0 ? ` 💀-${record.botches}` : '';
                 return `
                     <div class="history-item">
-                        ${record.timestamp} | ${record.action}: ${record.successes} успехов${noteText}<br>
+                        ${record.timestamp} | ${record.action}: ${record.successes} успехов${botchText}${noteText}<br>
                         <span style="opacity: 0.7;">🎲 ${record.diceResults}</span>
                     </div>
                 `;
             }).join('');
         }
         
-        // Очистка истории
         function clearHistory() {
             history = [];
             updateHistoryDisplay();
         }
         
-        // Загрузка сохранённого персонажа
         function loadSavedCharacter() {
             const savedType = localStorage.getItem('characterType');
             if (savedType && characters[savedType]) {
@@ -1279,6 +1451,7 @@
         }
         
         // Запуск
+        loadSettings();
         loadSavedCharacter();
         init();
     </script>
