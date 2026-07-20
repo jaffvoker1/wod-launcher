@@ -49,7 +49,6 @@
             letter-spacing: 2px;
         }
 
-        /* Сетка 2x2 */
         .games-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -59,7 +58,7 @@
         .game-card {
             background: #2a2a2a;
             border-radius: 20px;
-            padding: 35px 20px;
+            padding: 30px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -90,8 +89,8 @@
         }
 
         .game-icon {
-            font-size: 56px;
-            margin-bottom: 15px;
+            font-size: 48px;
+            margin-bottom: 12px;
             display: block;
         }
 
@@ -99,7 +98,7 @@
             font-size: 20px;
             font-weight: bold;
             color: #8b0000;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -122,7 +121,6 @@
             letter-spacing: 1px;
         }
 
-        /* Модальное окно выбора версии Vampire */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -146,7 +144,7 @@
             background: #1a1a1a;
             border-radius: 30px;
             padding: 40px;
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
             border: 2px solid #8b0000;
             box-shadow: 0 30px 80px rgba(139, 0, 0, 0.4);
@@ -188,6 +186,22 @@
             margin-top: 5px;
         }
 
+        .modal-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #8b0000, transparent);
+            margin: 20px 0;
+        }
+
+        .modal-section-title {
+            color: #aaa;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
         .modal-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -195,7 +209,7 @@
         }
 
         .modal-btn {
-            padding: 25px 15px;
+            padding: 20px 15px;
             background: #2a2a2a;
             border: 2px solid #444;
             border-radius: 15px;
@@ -214,19 +228,61 @@
         }
 
         .modal-btn .btn-icon {
-            font-size: 32px;
+            font-size: 28px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .modal-btn .btn-title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: bold;
             color: #8b0000;
         }
 
         .modal-btn .btn-desc {
             font-size: 11px;
+            color: #888;
+        }
+
+        .modal-books {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .modal-book-btn {
+            padding: 15px 10px;
+            background: #222;
+            border: 1px solid #555;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .modal-book-btn:hover {
+            border-color: #ff6600;
+            background: #2a2a2a;
+            transform: translateY(-3px);
+        }
+
+        .modal-book-btn .book-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .modal-book-btn .book-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .modal-book-btn .book-desc {
+            font-size: 10px;
             color: #888;
         }
 
@@ -248,7 +304,6 @@
             color: #8b0000;
         }
 
-        /* Адаптация */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -260,10 +315,10 @@
                 gap: 15px;
             }
             .game-card {
-                padding: 25px 15px;
+                padding: 20px 15px;
             }
             .game-icon {
-                font-size: 40px;
+                font-size: 36px;
             }
             .game-title {
                 font-size: 16px;
@@ -272,6 +327,9 @@
                 padding: 25px;
             }
             .modal-options {
+                grid-template-columns: 1fr;
+            }
+            .modal-books {
                 grid-template-columns: 1fr;
             }
         }
@@ -292,7 +350,6 @@
         <div class="subtitle">ВЫБЕРИ СВОЮ ИСТОРИЮ</div>
 
         <div class="games-grid">
-            <!-- Vampire (открывает модалку) -->
             <div class="game-card" onclick="openVampireModal()">
                 <span class="game-icon">🩸</span>
                 <div class="game-title">VAMPIRE</div>
@@ -300,25 +357,25 @@
                 <span class="game-badge">ВЫБЕРИ ВЕРСИЮ</span>
             </div>
 
-            <!-- Mage -->
-            <div class="game-card" onclick="openGame('Mage_WOD.html')">
+            <div class="game-card" onclick="openMageModal()">
                 <span class="game-icon">🔮</span>
                 <div class="game-title">MAGE</div>
                 <div class="game-desc">The Ascension<br>Лист мага</div>
+                <span class="game-badge">📖 КНИГА ПРАВИЛ</span>
             </div>
 
-            <!-- Hunter -->
-            <div class="game-card" onclick="openGame('Hunt_WOD.html')">
+            <div class="game-card" onclick="openHunterModal()">
                 <span class="game-icon">⚔️</span>
                 <div class="game-title">HUNTER</div>
                 <div class="game-desc">The Reckoning<br>Лист охотника</div>
+                <span class="game-badge">📖 КНИГА ПРАВИЛ</span>
             </div>
 
-            <!-- Dice -->
-            <div class="game-card" onclick="openGame('Dice.html')">
+            <div class="game-card" onclick="openDiceModal()">
                 <span class="game-icon">🎲</span>
                 <div class="game-title">DICE</div>
                 <div class="game-desc">Симулятор кубов<br>Бросай D10!</div>
+                <span class="game-badge">🎲 СИМУЛЯТОР</span>
             </div>
         </div>
 
@@ -327,7 +384,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно выбора версии Vampire -->
+    <!-- ===== VAMPIRE MODAL ===== -->
     <div class="modal-overlay" id="vampireModal">
         <div class="modal">
             <div class="modal-header">
@@ -336,53 +393,177 @@
                 <p>Выберите версию листа персонажа</p>
             </div>
 
+            <div class="modal-section-title">📋 ЛИСТЫ ПЕРСОНАЖЕЙ</div>
             <div class="modal-options">
                 <a href="VTM20_FULL.html" class="modal-btn">
                     <span class="btn-icon">📜</span>
                     <div class="btn-title">V20</div>
-                    <div class="btn-desc">Классическая версия<br>20-летие</div>
+                    <div class="btn-desc">Классическая версия</div>
                 </a>
-
                 <a href="VTMV5.html" class="modal-btn">
                     <span class="btn-icon">🆕</span>
                     <div class="btn-title">V5</div>
-                    <div class="btn-desc">Современная версия<br>5-я редакция</div>
+                    <div class="btn-desc">5-я редакция</div>
                 </a>
             </div>
 
-            <button class="modal-close" onclick="closeVampireModal()">✕ Закрыть</button>
+            <hr class="modal-divider">
+
+            <div class="modal-section-title">📖 КНИГИ ПРАВИЛ</div>
+            <div class="modal-books">
+                <a href="https://drive.google.com/file/d/1Hy-acX4amXsSeJGHp8DBlqdxN2zyodck/view?usp=drive_link" class="modal-book-btn" target="_blank">
+                    <span class="book-icon">📕</span>
+                    <div class="book-title">V20</div>
+                    <div class="book-desc">Книга правил</div>
+                </a>
+                <a href="https://drive.google.com/file/d/1k3QQYc1EQYGA1gR22JWLxvB28rrY5sdV/view?usp=drive_link" class="modal-book-btn" target="_blank">
+                    <span class="book-icon">📗</span>
+                    <div class="book-title">V5</div>
+                    <div class="book-desc">Книга правил</div>
+                </a>
+            </div>
+
+            <button class="modal-close" onclick="closeModal('vampireModal')">✕ Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ===== MAGE MODAL ===== -->
+    <div class="modal-overlay" id="mageModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="icon">🔮</span>
+                <h2>Mage: The Ascension</h2>
+                <p>Лист мага и книга правил</p>
+            </div>
+
+            <div class="modal-section-title">📋 ЛИСТ ПЕРСОНАЖА</div>
+            <div class="modal-options" style="grid-template-columns: 1fr;">
+                <a href="Mage_WOD.html" class="modal-btn">
+                    <span class="btn-icon">📜</span>
+                    <div class="btn-title">MAGE</div>
+                    <div class="btn-desc">Лист мага</div>
+                </a>
+            </div>
+
+            <hr class="modal-divider">
+
+            <div class="modal-section-title">📖 КНИГА ПРАВИЛ</div>
+            <div class="modal-books" style="grid-template-columns: 1fr;">
+                <a href="https://drive.google.com/file/d/1xiKBxqIBjJZB72wb2LmzOO9e8ThQV0ES/view?usp=drive_link" class="modal-book-btn" target="_blank">
+                    <span class="book-icon">📘</span>
+                    <div class="book-title">Mage</div>
+                    <div class="book-desc">Книга правил</div>
+                </a>
+            </div>
+
+            <button class="modal-close" onclick="closeModal('mageModal')">✕ Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ===== HUNTER MODAL ===== -->
+    <div class="modal-overlay" id="hunterModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="icon">⚔️</span>
+                <h2>Hunter: The Reckoning</h2>
+                <p>Лист охотника и книга правил</p>
+            </div>
+
+            <div class="modal-section-title">📋 ЛИСТ ПЕРСОНАЖА</div>
+            <div class="modal-options" style="grid-template-columns: 1fr;">
+                <a href="Hunt_WOD.html" class="modal-btn">
+                    <span class="btn-icon">📜</span>
+                    <div class="btn-title">HUNTER</div>
+                    <div class="btn-desc">Лист охотника</div>
+                </a>
+            </div>
+
+            <hr class="modal-divider">
+
+            <div class="modal-section-title">📖 КНИГА ПРАВИЛ</div>
+            <div class="modal-books" style="grid-template-columns: 1fr;">
+                <a href="https://share.google/Pw6du3la58y0c6NZs" class="modal-book-btn" target="_blank">
+                    <span class="book-icon">📙</span>
+                    <div class="book-title">Hunter</div>
+                    <div class="book-desc">Книга правил</div>
+                </a>
+            </div>
+
+            <button class="modal-close" onclick="closeModal('hunterModal')">✕ Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ===== DICE MODAL ===== -->
+    <div class="modal-overlay" id="diceModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="icon">🎲</span>
+                <h2>Симулятор кубов</h2>
+                <p>Бросай D10 и другие кубики</p>
+            </div>
+
+            <div class="modal-section-title">🎲 СИМУЛЯТОР</div>
+            <div class="modal-options" style="grid-template-columns: 1fr;">
+                <a href="Dice.html" class="modal-btn">
+                    <span class="btn-icon">🎲</span>
+                    <div class="btn-title">DICE</div>
+                    <div class="btn-desc">Симулятор кубов</div>
+                </a>
+            </div>
+
+            <hr class="modal-divider">
+
+            <div class="modal-section-title">📖 КНИГА ПРАВИЛ</div>
+            <div style="text-align: center; color: #666; font-size: 13px; padding: 15px; background: #222; border-radius: 10px;">
+                📚 Книга правил для Dice не требуется<br>
+                <span style="font-size: 11px; color: #444;">Просто бросайте кубики!</span>
+            </div>
+
+            <button class="modal-close" onclick="closeModal('diceModal')">✕ Закрыть</button>
         </div>
     </div>
 
     <script>
-        // Открыть игру в новой вкладке
-        function openGame(fileName) {
-            window.open(fileName, '_blank');
-        }
-
-        // Открыть модалку Vampire
         function openVampireModal() {
             document.getElementById('vampireModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        // Закрыть модалку Vampire
-        function closeVampireModal() {
-            document.getElementById('vampireModal').classList.remove('active');
+        function openMageModal() {
+            document.getElementById('mageModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openHunterModal() {
+            document.getElementById('hunterModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openDiceModal() {
+            document.getElementById('diceModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // Закрыть по клику на фон
-        document.getElementById('vampireModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeVampireModal();
-            }
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
         });
 
-        // Закрыть по Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closeVampireModal();
+                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
             }
         });
     </script>
