@@ -24,7 +24,7 @@
         .container {
             max-width: 900px;
             width: 100%;
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(30, 30, 30, 0.95);
             border-radius: 30px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -59,7 +59,7 @@
         .game-card {
             background: #2a2a2a;
             border-radius: 20px;
-            padding: 40px 20px;
+            padding: 35px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -90,26 +90,165 @@
         }
 
         .game-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
+            font-size: 56px;
+            margin-bottom: 15px;
+            display: block;
         }
 
         .game-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #8b0000;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .game-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: #999;
             line-height: 1.4;
         }
 
-        /* Адаптация для телефонов */
+        .game-badge {
+            display: inline-block;
+            background: #8b0000;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Модальное окно выбора версии Vampire */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a1a;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid #8b0000;
+            box-shadow: 0 30px 80px rgba(139, 0, 0, 0.4);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            color: #8b0000;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-header p {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .modal-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            padding: 25px 15px;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .modal-btn:hover {
+            border-color: #8b0000;
+            transform: translateY(-5px);
+            background: #333;
+            box-shadow: 0 10px 30px rgba(139, 0, 0, 0.2);
+        }
+
+        .modal-btn .btn-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .modal-btn .btn-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+
+        .modal-btn .btn-desc {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .modal-close {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #666;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            border-color: #8b0000;
+            color: #8b0000;
+        }
+
+        /* Адаптация */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -124,69 +263,128 @@
                 padding: 25px 15px;
             }
             .game-icon {
-                font-size: 48px;
+                font-size: 40px;
             }
             .game-title {
                 font-size: 16px;
             }
-            .game-desc {
-                font-size: 10px;
+            .modal {
+                padding: 25px;
+            }
+            .modal-options {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Кнопка сброса (опционально) */
         .footer {
             text-align: center;
-            margin-top: 40px;
-            color: #555;
+            margin-top: 35px;
+            color: #444;
             font-size: 11px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+    <!-- Главное меню -->
     <div class="container">
-        <h1>🌑 WORLD OF DARKNESS</h1>
+        <h1>🩸 WORLD OF DARKNESS</h1>
         <div class="subtitle">ВЫБЕРИ СВОЮ ИСТОРИЮ</div>
 
         <div class="games-grid">
-            <!-- Vampire: The Masquerade -->
-            <div class="game-card" onclick="openGame('VTM20_FULL.html')">
-                <div class="game-icon">🩸</div>
+            <!-- Vampire (открывает модалку) -->
+            <div class="game-card" onclick="openVampireModal()">
+                <span class="game-icon">🩸</span>
                 <div class="game-title">VAMPIRE</div>
-                <div class="game-desc">The Masquerade<br>Лист персонажа V20</div>
+                <div class="game-desc">The Masquerade<br>Лист персонажа</div>
+                <span class="game-badge">ВЫБЕРИ ВЕРСИЮ</span>
             </div>
 
-            <!-- Mage: The Ascension -->
+            <!-- Mage -->
             <div class="game-card" onclick="openGame('Mage_WOD.html')">
-                <div class="game-icon">🔮</div>
+                <span class="game-icon">🔮</span>
                 <div class="game-title">MAGE</div>
                 <div class="game-desc">The Ascension<br>Лист мага</div>
             </div>
 
-            <!-- Hunter: The Reckoning -->
+            <!-- Hunter -->
             <div class="game-card" onclick="openGame('Hunt_WOD.html')">
-                <div class="game-icon">⚔️</div>
+                <span class="game-icon">⚔️</span>
                 <div class="game-title">HUNTER</div>
                 <div class="game-desc">The Reckoning<br>Лист охотника</div>
             </div>
 
-            <!-- Dice Simulator -->
-            <div class="game-card" onclick="openGame('Dice.html')">
-                <div class="game-icon">🎲</div>
+            <!-- Dice -->
+            <div class="game-card" onclick="openGame('Dice VTM20.html')">
+                <span class="game-icon">🎲</span>
                 <div class="game-title">DICE</div>
                 <div class="game-desc">Симулятор кубов<br>Бросай D10!</div>
             </div>
         </div>
 
         <div class="footer">
-            ⚡ Нажми на любую карточку, чтобы открыть
+            ⚡ Нажми на карточку, чтобы открыть
+        </div>
+    </div>
+
+    <!-- Модальное окно выбора версии Vampire -->
+    <div class="modal-overlay" id="vampireModal">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="icon">🩸</span>
+                <h2>Vampire: The Masquerade</h2>
+                <p>Выберите версию листа персонажа</p>
+            </div>
+
+            <div class="modal-options">
+                <a href="VTM20_FULL.html" class="modal-btn">
+                    <span class="btn-icon">📜</span>
+                    <div class="btn-title">V20</div>
+                    <div class="btn-desc">Классическая версия<br>20-летие</div>
+                </a>
+
+                <a href="VTMV5.html" class="modal-btn">
+                    <span class="btn-icon">🆕</span>
+                    <div class="btn-title">V5</div>
+                    <div class="btn-desc">Современная версия<br>5-я редакция</div>
+                </a>
+            </div>
+
+            <button class="modal-close" onclick="closeVampireModal()">✕ Закрыть</button>
         </div>
     </div>
 
     <script>
+        // Открыть игру в новой вкладке
         function openGame(fileName) {
             window.open(fileName, '_blank');
         }
+
+        // Открыть модалку Vampire
+        function openVampireModal() {
+            document.getElementById('vampireModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Закрыть модалку Vampire
+        function closeVampireModal() {
+            document.getElementById('vampireModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Закрыть по клику на фон
+        document.getElementById('vampireModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVampireModal();
+            }
+        });
+
+        // Закрыть по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVampireModal();
+            }
+        });
     </script>
 </body>
 </html>
