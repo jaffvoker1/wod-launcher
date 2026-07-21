@@ -425,7 +425,7 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* Плавающая кнопка кубов */
+        /* Плавающая кнопка */
         .floating-dice-btn {
             position: fixed;
             bottom: 20px;
@@ -445,320 +445,15 @@
             justify-content: center;
             transition: all 0.3s;
             z-index: 1000;
+            text-decoration: none;
         }
 
-        /* Модальное окно */
-        .dice-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
+        .floating-dice-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(255, 0, 0, 0.6);
         }
 
-        .dice-modal.active {
-            display: flex;
-        }
-
-        .dice-panel {
-            background: #1a1a1a;
-            border: 2px solid #8b0000;
-            border-radius: 10px;
-            padding: 15px;
-            max-width: 95vw;
-            width: 600px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        /* Стили для модального окна */
-        .dice-panel h3 {
-            color: #ffcc00;
-            margin-bottom: 12px;
-        }
-
-        .trait-checkbox-list {
-            max-height: 280px;
-            overflow-y: auto;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 6px;
-            margin-bottom: 10px;
-        }
-
-        .trait-category {
-            color: #ffcc00;
-            font-weight: bold;
-            margin: 6px 0 3px 0;
-            padding-bottom: 2px;
-            border-bottom: 1px solid #8b0000;
-            font-size: clamp(11px, 1.2vw, 13px);
-        }
-
-        .trait-category:first-child {
-            margin-top: 0;
-        }
-
-        .trait-checkbox-item {
-            display: flex;
-            align-items: center;
-            padding: 3px 6px;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-
-        .trait-checkbox-item:hover {
-            background: rgba(139, 0, 0, 0.2);
-        }
-
-        .trait-checkbox-item input {
-            margin-right: 6px;
-            cursor: pointer;
-            width: 15px;
-            height: 15px;
-            accent-color: #8b0000;
-            flex-shrink: 0;
-        }
-
-        .trait-checkbox-item label {
-            flex: 1;
-            cursor: pointer;
-            color: #cccccc;
-            font-size: clamp(10px, 1vw, 12px);
-        }
-
-        .trait-checkbox-item .trait-value {
-            color: #8b0000;
-            font-weight: bold;
-            margin-left: 6px;
-            font-size: clamp(10px, 1vw, 12px);
-            flex-shrink: 0;
-        }
-
-        .selected-summary {
-            background: #1a1a1a;
-            border: 1px solid #8b0000;
-            border-radius: 5px;
-            padding: 6px;
-            margin-bottom: 10px;
-        }
-
-        .selected-summary h4 {
-            color: #ffcc00;
-            margin-bottom: 5px;
-            font-size: clamp(11px, 1.2vw, 13px);
-        }
-
-        .selected-trait-badge {
-            display: inline-block;
-            background: #8b0000;
-            color: white;
-            padding: 2px 5px;
-            border-radius: 10px;
-            font-size: clamp(9px, 0.9vw, 11px);
-            margin: 2px;
-            cursor: pointer;
-        }
-
-        .selected-trait-badge:hover {
-            background: #cc0000;
-        }
-
-        .total-dice-count {
-            font-size: clamp(16px, 1.8vw, 20px);
-            font-weight: bold;
-            color: #ffcc00;
-            text-align: center;
-            margin: 6px 0 3px;
-        }
-
-        .select-all-btn {
-            background: #2a2a2a;
-            color: #cccccc;
-            border: 1px solid #8b0000;
-            padding: 3px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-right: 3px;
-            font-size: clamp(9px, 0.9vw, 11px);
-        }
-
-        .select-all-btn:hover {
-            background: #8b0000;
-            color: white;
-        }
-
-        .dice-result-panel {
-            background: #0a0a0a;
-            border-radius: 6px;
-            padding: 12px;
-            margin: 12px 0;
-        }
-
-        .dice-roll-results {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            justify-content: center;
-            margin: 10px 0;
-        }
-
-        .dice-die {
-            width: clamp(32px, 4vw, 40px);
-            height: clamp(32px, 4vw, 40px);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(14px, 1.8vw, 18px);
-            font-weight: bold;
-            background: #2a2a2a;
-            border: 2px solid;
-        }
-
-        .dice-die.success {
-            background: linear-gradient(135deg, #4ecdc4, #44a08d);
-            border-color: #4ecdc4;
-        }
-
-        .dice-die.critical {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            border-color: #ffd700;
-            animation: pulse 1.5s infinite;
-            color: #1a1a1a;
-        }
-
-        .dice-die.failure {
-            background: #333;
-            border-color: #666;
-            opacity: 0.7;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .dice-actions {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-
-        .dice-action-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex: 1;
-            min-width: 100px;
-            font-size: clamp(10px, 1vw, 12px);
-        }
-
-        .dice-action-btn.willpower {
-            background: linear-gradient(135deg, #4ecdc4, #3ba89f);
-            color: white;
-        }
-
-        .dice-action-btn.blood {
-            background: linear-gradient(135deg, #e94560, #c62a47);
-            color: white;
-        }
-
-        .dice-action-btn.finish {
-            background: linear-gradient(135deg, #ffcc00, #ff9900);
-            color: #1a1a1a;
-        }
-
-        .dice-action-btn.new-roll {
-            background: linear-gradient(135deg, #8b0000, #cc0000);
-            color: white;
-            margin-top: 6px;
-        }
-
-        .dice-action-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .dice-history {
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid #444;
-        }
-
-        .dice-history h4 {
-            color: #8b0000;
-            margin-bottom: 6px;
-            font-size: clamp(11px, 1.2vw, 13px);
-        }
-
-        .history-list {
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 5px;
-            margin-bottom: 3px;
-            background: #2a2a2a;
-            border-radius: 3px;
-            font-size: clamp(9px, 0.9vw, 11px);
-            border-left: 3px solid #8b0000;
-        }
-
-        .notification {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: clamp(11px, 1.1vw, 13px);
-            animation: slideIn 0.3s ease;
-            z-index: 3000;
-        }
-
-        .notification.failure {
-            background: rgba(244, 67, 54, 0.95);
-            color: white;
-        }
-
-        .notification.success {
-            background: rgba(76, 175, 80, 0.95);
-            color: white;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .close-modal-btn {
-            background: #8b0000;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 6px;
-            font-weight: bold;
-            font-size: clamp(11px, 1.1vw, 13px);
-        }
-
+        /* Подсказка */
         .hint {
             text-align: center;
             color: #666;
@@ -766,15 +461,7 @@
             margin-top: 6px;
         }
 
-        #selectedTraitsDisplay {
-            color: #ffcc00;
-            text-align: center;
-            margin-bottom: 6px;
-            font-size: clamp(10px, 1vw, 12px);
-            line-height: 1.3;
-        }
-
-        /* Медиа-запросы для маленьких экранов */
+        /* Медиа-запросы */
         @media (max-width: 768px) {
             body {
                 padding: 5px;
@@ -795,19 +482,6 @@
             
             .attr-column, .ability-column,
             .merits-flaws, .center-panel, .health-panel {
-                min-width: auto;
-            }
-            
-            .dice-panel {
-                padding: 10px;
-                max-width: 98vw;
-            }
-            
-            .dice-actions {
-                flex-direction: column;
-            }
-            
-            .dice-action-btn {
                 min-width: auto;
             }
         }
@@ -865,46 +539,10 @@
     </style>
 </head>
 <body>
-    <!-- Плавающая кнопка кубов -->
-    <div class="floating-dice-btn" id="diceBtn" onclick="toggleDiceMode()">🎲</div>
-
-    <!-- Модальное окно броска -->
-    <div class="dice-modal" id="diceModal">
-        <div class="dice-panel">
-            <h3>🎲 Бросок кубов (мультивыбор)</h3>
-            <div id="diceSelectionArea">
-                <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                    <button class="select-all-btn" onclick="selectAllTraits()">✓ Выбрать всё</button>
-                    <button class="select-all-btn" onclick="deselectAllTraits()">✗ Снять всё</button>
-                </div>
-                <div class="trait-checkbox-list" id="traitCheckboxList"></div>
-                <div class="selected-summary" id="selectedSummary" style="display: none;">
-                    <h4>Выбрано:</h4>
-                    <div id="selectedTraitsList"></div>
-                    <div class="total-dice-count">🎲 Всего кубов: <span id="totalDiceCount">0</span></div>
-                </div>
-                <button class="btn" onclick="rollSelectedTraits()" style="width: 100%; margin-top: 10px;" id="rollTraitsBtn" disabled>🎲 Бросить выбранное (0 кубов)</button>
-            </div>
-            <div id="diceResultArea" style="display: none;">
-                <div class="dice-result-panel">
-                    <div id="selectedTraitsDisplay"></div>
-                    <div class="dice-roll-results" id="diceRollResults"></div>
-                    <div style="text-align: center; font-size: 16px; margin: 8px 0;">✅ Успехов: <span id="currentSuccesses" style="color: #4ecdc4; font-size: 22px; font-weight: bold;">0</span></div>
-                    <div class="dice-actions">
-                        <button class="dice-action-btn willpower" id="spendWillpowerDiceBtn" onclick="spendWillpowerOnRoll()" disabled>💫 Воля (-1)</button>
-                        <button class="dice-action-btn blood" id="spendBloodDiceBtn" onclick="spendBloodOnRoll()" disabled>🩸 Кровь (-1)</button>
-                    </div>
-                    <button class="dice-action-btn finish" id="finishRollBtn" onclick="finishRoll()">📊 Итог</button>
-                    <button class="dice-action-btn new-roll" id="newRollBtn" onclick="resetToSelection()" style="display: none;">🎲 Новый бросок</button>
-                </div>
-            </div>
-            <div class="dice-history">
-                <h4>📜 История бросков</h4>
-                <div class="history-list" id="diceHistoryList"><div class="history-item">История пуста</div></div>
-            </div>
-            <button class="close-modal-btn" onclick="closeDiceModal()">Закрыть</button>
-        </div>
-    </div>
+    <!-- Плавающая кнопка-ссылка -->
+    <a href="https://jaffvoker1.github.io/wod-launcher/Dice.html" target="_blank" class="floating-dice-btn" title="Открыть дайс-роллер">
+        🎲
+    </a>
 
     <div class="container">
         <h1>VAMPIRE: THE MASQUERADE V20</h1>
@@ -999,7 +637,7 @@
         <!-- Заметки -->
         <h3>ЗАМЕТКИ</h3>
         <div class="notes-section"><textarea id="notes" placeholder="Введите заметки о персонаже..."></textarea></div>
-        <div class="hint">Левая кнопка мыши — увеличить | Правая — уменьшить | Здоровье: ЛКМ — увеличить, ПКМ — уменьшить</div>
+        <div class="hint">Левая кнопка мыши — увеличить | Правая — уменьшить | Здоровье: ЛКМ — увеличить, ПКМ — уменьшить | 🎲 — открыть дайс-роллер</div>
     </div>
 
     <script>
@@ -1016,14 +654,9 @@
             willTemp: 5, willPerm: 5, bloodPool: 10, humanity: 7, health: Array(7).fill(0)
         };
 
-        let currentRoll = { traitName: '', diceCount: 0, rolls: [], successes: 0, willpowerSpent: false, bloodSpent: false, completed: false };
-        let diceHistory = [];
-        let selectedTraits = new Set();
-        let allTraitsList = [];
-
         function init() {
             initAttributes(); initAbilities(); initDisciplines(); initBackgrounds(); initVirtues(); initMerits();
-            initHumanity(); initWillpower(); initBloodPool(); initHealth(); setInitialValues(); loadDiceHistory();
+            initHumanity(); initWillpower(); initBloodPool(); initHealth(); setInitialValues();
         }
 
         function initAttributes() {
@@ -1224,116 +857,6 @@
                 updateHealthDisplay();
             }, 10);
         }
-
-        // Функции броска кубов
-        function toggleDiceMode() { const m = document.getElementById('diceModal'); m.classList.contains('active') ? closeDiceModal() : openDiceModal(); }
-        function openDiceModal() { document.getElementById('diceModal').classList.add('active'); document.getElementById('diceBtn').classList.add('active'); selectedTraits.clear(); renderTraitCheckboxes(); resetToSelection(); }
-        function closeDiceModal() { document.getElementById('diceModal').classList.remove('active'); document.getElementById('diceBtn').classList.remove('active'); resetToSelection(); }
-
-        function buildAllTraitsList() {
-            allTraitsList = [];
-            characterData.attributes.physical.forEach(a => allTraitsList.push({ category: 'Физические', name: a, key: `attr_${a}`, value: values.attributes[a] || 0 }));
-            characterData.attributes.social.forEach(a => allTraitsList.push({ category: 'Социальные', name: a, key: `attr_${a}`, value: values.attributes[a] || 0 }));
-            characterData.attributes.mental.forEach(a => allTraitsList.push({ category: 'Ментальные', name: a, key: `attr_${a}`, value: values.attributes[a] || 0 }));
-            characterData.abilities.talents.forEach(a => allTraitsList.push({ category: 'Таланты', name: a, key: `ab_${a}`, value: values.abilities[a] || 0 }));
-            characterData.abilities.skills.forEach(a => allTraitsList.push({ category: 'Навыки', name: a, key: `ab_${a}`, value: values.abilities[a] || 0 }));
-            characterData.abilities.knowledges.forEach(a => allTraitsList.push({ category: 'Знания', name: a, key: `ab_${a}`, value: values.abilities[a] || 0 }));
-            values.disciplines.forEach((d, i) => { if (d.name) allTraitsList.push({ category: 'Дисциплины', name: d.name, key: `disc_${i}`, value: d.value }); });
-            values.backgrounds.forEach((b, i) => { if (b.name) allTraitsList.push({ category: 'Факты биографии', name: b.name, key: `bg_${i}`, value: b.value }); });
-            characterData.virtues.forEach(v => allTraitsList.push({ category: 'Добродетели', name: v, key: `virt_${v}`, value: values.virtues[v] || 0 }));
-        }
-
-        function renderTraitCheckboxes() {
-            buildAllTraitsList(); const c = document.getElementById('traitCheckboxList'); c.innerHTML = '';
-            const cats = {}; allTraitsList.forEach(t => { if (!cats[t.category]) cats[t.category] = []; cats[t.category].push(t); });
-            Object.keys(cats).forEach(cat => {
-                const h = document.createElement('div'); h.className = 'trait-category'; h.textContent = cat; c.appendChild(h);
-                cats[cat].forEach(t => { if (t.value > 0) {
-                    const item = document.createElement('div'); item.className = 'trait-checkbox-item';
-                    const chk = document.createElement('input'); chk.type = 'checkbox'; chk.id = `chk_${t.key}`; chk.dataset.key = t.key; chk.checked = selectedTraits.has(t.key);
-                    chk.addEventListener('change', (e) => { e.target.checked ? selectedTraits.add(t.key) : selectedTraits.delete(t.key); updateSelectedSummary(); });
-                    const lbl = document.createElement('label'); lbl.htmlFor = `chk_${t.key}`; lbl.textContent = t.name;
-                    const val = document.createElement('span'); val.className = 'trait-value'; val.textContent = t.value;
-                    item.appendChild(chk); item.appendChild(lbl); item.appendChild(val);
-                    item.addEventListener('click', (e) => { if (e.target !== chk) { chk.checked = !chk.checked; chk.checked ? selectedTraits.add(t.key) : selectedTraits.delete(t.key); updateSelectedSummary(); } });
-                    c.appendChild(item);
-                }});
-            });
-            updateSelectedSummary();
-        }
-
-        function updateSelectedSummary() {
-            const sum = document.getElementById('selectedSummary'), list = document.getElementById('selectedTraitsList'), totalSpan = document.getElementById('totalDiceCount'), btn = document.getElementById('rollTraitsBtn');
-            let total = 0; const items = [];
-            selectedTraits.forEach(k => { const t = allTraitsList.find(tr => tr.key === k); if (t) { total += t.value; items.push(t); } });
-            if (items.length) { sum.style.display = 'block'; list.innerHTML = ''; items.forEach(t => { const b = document.createElement('span'); b.className = 'selected-trait-badge'; b.textContent = `${t.name} (${t.value})`; b.onclick = () => { selectedTraits.delete(t.key); document.getElementById(`chk_${t.key}`).checked = false; updateSelectedSummary(); }; list.appendChild(b); }); totalSpan.textContent = total; btn.disabled = total === 0; btn.textContent = `🎲 Бросить выбранное (${total} кубов)`; }
-            else { sum.style.display = 'none'; btn.disabled = true; btn.textContent = '🎲 Бросить выбранное (0 кубов)'; }
-        }
-
-        function selectAllTraits() { allTraitsList.forEach(t => { if (t.value > 0) selectedTraits.add(t.key); }); renderTraitCheckboxes(); }
-        function deselectAllTraits() { selectedTraits.clear(); renderTraitCheckboxes(); }
-
-        function rollSelectedTraits() {
-            if (!selectedTraits.size) { showNotification('Выберите характеристику!', 'failure'); return; }
-            let total = 0; const names = [];
-            selectedTraits.forEach(k => { const t = allTraitsList.find(tr => tr.key === k); if (t) { total += t.value; names.push(`${t.name} (${t.value})`); } });
-            if (!total) { showNotification('Нет очков!', 'failure'); return; }
-            currentRoll = { traitName: names.join(' + '), diceCount: total, rolls: [], successes: 0, willpowerSpent: false, bloodSpent: false, completed: false };
-            for (let i = 0; i < total; i++) { const r = Math.floor(Math.random() * 10) + 1; const t = r === 10 ? 'critical' : (r % 2 === 0 ? 'success' : 'failure'); const s = r === 10 ? 2 : (r % 2 === 0 ? 1 : 0); currentRoll.rolls.push({ value: r, type: t, successes: s }); currentRoll.successes += s; }
-            displayRollResultsMulti(names.join(' + '));
-            document.getElementById('diceSelectionArea').style.display = 'none'; document.getElementById('diceResultArea').style.display = 'block';
-            document.getElementById('newRollBtn').style.display = 'none'; document.getElementById('finishRollBtn').style.display = 'block';
-            updateDiceActionButtons();
-        }
-
-        function displayRollResultsMulti(names) {
-            const c = document.getElementById('diceRollResults'); c.innerHTML = '';
-            document.getElementById('selectedTraitsDisplay').innerHTML = `Бросок: <strong>${names}</strong><br>Всего кубов: ${currentRoll.diceCount}`;
-            currentRoll.rolls.forEach(r => { const d = document.createElement('div'); d.className = `dice-die ${r.type}`; d.textContent = r.value; c.appendChild(d); });
-            document.getElementById('currentSuccesses').textContent = currentRoll.successes;
-        }
-
-        function updateDiceActionButtons() {
-            document.getElementById('spendWillpowerDiceBtn').disabled = currentRoll.willpowerSpent || values.willTemp <= 0 || currentRoll.completed;
-            const hasF = currentRoll.rolls.some(r => r.type === 'failure');
-            document.getElementById('spendBloodDiceBtn').disabled = currentRoll.bloodSpent || values.bloodPool <= 0 || !hasF || currentRoll.completed;
-        }
-
-        function spendWillpowerOnRoll() { if (currentRoll.willpowerSpent || values.willTemp <= 0 || currentRoll.completed) return; values.willTemp--; currentRoll.successes++; currentRoll.willpowerSpent = true; updateDotsDisplay(document.getElementById('willTemp-dots'), values.willTemp); document.getElementById('currentSuccesses').textContent = currentRoll.successes; updateDiceActionButtons(); showNotification('Воля потрачена! +1 успех', 'success'); }
-        function spendBloodOnRoll() {
-            if (currentRoll.bloodSpent || values.bloodPool <= 0 || currentRoll.completed) return;
-            const fails = []; currentRoll.rolls.forEach((r, i) => { if (r.type === 'failure') fails.push(i); });
-            if (!fails.length) { showNotification('Нет кубов для переброса!', 'failure'); return; }
-            values.bloodPool--; currentRoll.bloodSpent = true; let any = false;
-            fails.forEach(i => { const nv = Math.floor(Math.random() * 10) + 1; const t = nv === 10 ? 'critical' : (nv % 2 === 0 ? 'success' : 'failure'); const s = nv === 10 ? 2 : (nv % 2 === 0 ? 1 : 0); currentRoll.rolls[i] = { value: nv, type: t, successes: s }; if (t !== 'failure') any = true; });
-            currentRoll.successes = currentRoll.rolls.reduce((sum, r) => sum + r.successes, 0);
-            updateDotsDisplay(document.getElementById('bloodPool-dots'), values.bloodPool); displayRollResultsMulti(currentRoll.traitName); updateDiceActionButtons();
-            showNotification(any ? 'Кровь потрачена! Переброс дал успехи!' : 'Кровь затрачена впустую...', any ? 'success' : 'failure');
-        }
-
-        function finishRoll() {
-            if (currentRoll.completed) return; currentRoll.completed = true; updateDiceActionButtons();
-            diceHistory.unshift({ trait: currentRoll.traitName, diceCount: currentRoll.diceCount, finalSuccesses: currentRoll.successes, willpowerUsed: currentRoll.willpowerSpent, bloodUsed: currentRoll.bloodSpent, timestamp: new Date().toLocaleTimeString() });
-            if (diceHistory.length > 20) diceHistory.pop(); saveDiceHistory(); updateDiceHistoryDisplay();
-            showNotification(`Итог: ${currentRoll.successes} успехов!`, 'success');
-            document.getElementById('newRollBtn').style.display = 'block'; document.getElementById('finishRollBtn').style.display = 'none';
-        }
-
-        function resetToSelection() {
-            document.getElementById('diceSelectionArea').style.display = 'block'; document.getElementById('diceResultArea').style.display = 'none';
-            document.getElementById('newRollBtn').style.display = 'none'; document.getElementById('finishRollBtn').style.display = 'block';
-            selectedTraits.clear(); renderTraitCheckboxes(); currentRoll = { traitName: '', diceCount: 0, rolls: [], successes: 0, willpowerSpent: false, bloodSpent: false, completed: false };
-        }
-
-        function updateDiceHistoryDisplay() {
-            const c = document.getElementById('diceHistoryList');
-            if (!diceHistory.length) { c.innerHTML = '<div class="history-item">История пуста</div>'; return; }
-            c.innerHTML = diceHistory.map(e => `<div class="history-item"><strong>${e.trait.length > 50 ? e.trait.substring(0,47)+'...' : e.trait}</strong><br>🎲 ${e.diceCount} кубов → ${e.finalSuccesses} успехов${e.willpowerUsed ? '<br>🔹 💫 Воля' : ''}${e.bloodUsed ? '<br>🔹 🩸 Кровь' : ''}<br><span style="opacity:0.6">${e.timestamp}</span></div>`).join('');
-        }
-
-        function saveDiceHistory() { localStorage.setItem('vtmDiceHistory', JSON.stringify(diceHistory)); }
-        function loadDiceHistory() { const s = localStorage.getItem('vtmDiceHistory'); if (s) { diceHistory = JSON.parse(s); updateDiceHistoryDisplay(); } }
-        function showNotification(msg, type) { const n = document.createElement('div'); n.className = `notification ${type}`; n.textContent = msg; document.body.appendChild(n); setTimeout(() => n.remove(), 3000); }
 
         // Сохранение/загрузка
         function collectData() {
