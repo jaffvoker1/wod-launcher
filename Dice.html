@@ -115,7 +115,7 @@
             color: #ff6b6b;
         }
         
-        /* Модальное окно - ПОЛНОСТЬЮ ПЕРЕПИСАНО */
+        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -126,7 +126,6 @@
             height: 100dvh;
             background: rgba(0, 0, 0, 0.9);
             z-index: 9999;
-            /* Используем flex с column для надёжного позиционирования */
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
@@ -184,7 +183,6 @@
             background: rgba(0, 0, 0, 0.2);
         }
         
-        /* Опции персонажей */
         .character-options {
             display: flex;
             flex-direction: column;
@@ -207,9 +205,11 @@
             border-color: rgba(180, 0, 0, 0.3);
         }
         
-        .character-option.vampire:active {
-            background: rgba(180, 0, 0, 0.3);
+        .character-option.vampire:active,
+        .character-option.vampire.selected {
+            background: rgba(180, 0, 0, 0.25);
             border-color: #b40000;
+            box-shadow: 0 0 20px rgba(180, 0, 0, 0.3);
         }
         
         .character-option.hunter {
@@ -217,9 +217,11 @@
             border-color: rgba(255, 140, 0, 0.3);
         }
         
-        .character-option.hunter:active {
-            background: rgba(255, 140, 0, 0.3);
+        .character-option.hunter:active,
+        .character-option.hunter.selected {
+            background: rgba(255, 140, 0, 0.25);
             border-color: #ff8c00;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
         }
         
         .character-option.mage {
@@ -227,27 +229,7 @@
             border-color: rgba(0, 100, 200, 0.3);
         }
         
-        .character-option.mage:active {
-            background: rgba(0, 100, 200, 0.3);
-            border-color: #0064c8;
-        }
-        
-        .character-option.selected {
-            transform: scale(1.02);
-        }
-        
-        .character-option.vampire.selected {
-            background: rgba(180, 0, 0, 0.25);
-            border-color: #b40000;
-            box-shadow: 0 0 20px rgba(180, 0, 0, 0.3);
-        }
-        
-        .character-option.hunter.selected {
-            background: rgba(255, 140, 0, 0.25);
-            border-color: #ff8c00;
-            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
-        }
-        
+        .character-option.mage:active,
         .character-option.mage.selected {
             background: rgba(0, 100, 200, 0.25);
             border-color: #0064c8;
@@ -274,7 +256,6 @@
             opacity: 0.8;
         }
         
-        /* Переключатель правила */
         .rule-toggle-section {
             padding: 12px 15px;
             background: rgba(0, 0, 0, 0.3);
@@ -351,7 +332,6 @@
             left: 23px;
         }
         
-        /* Кнопка Продолжить - ОГРОМНАЯ ДЛЯ МОБИЛЬНЫХ */
         .close-modal-btn {
             display: block;
             width: 100%;
@@ -372,8 +352,104 @@
         
         .close-modal-btn:active {
             background: rgba(201, 179, 124, 0.35);
-            border-color: #c9b37c;
             transform: scale(0.98);
+        }
+        
+        /* Модальное окно ввода числа */
+        .input-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .input-modal-overlay.active {
+            display: flex;
+        }
+        
+        .input-modal {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid rgba(201, 179, 124, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        
+        .input-modal-title {
+            font-size: 1.3em;
+            color: #c9b37c;
+            margin-bottom: 8px;
+        }
+        
+        .input-modal-desc {
+            font-size: 0.9em;
+            color: #8a7b6b;
+            margin-bottom: 15px;
+        }
+        
+        .input-modal-field {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.3em;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(201, 179, 124, 0.3);
+            border-radius: 10px;
+            color: #e0e0e0;
+            outline: none;
+            margin-bottom: 15px;
+            -webkit-appearance: none;
+        }
+        
+        .input-modal-field:focus {
+            border-color: #c9b37c;
+        }
+        
+        .input-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .input-modal-btn.confirm {
+            background: rgba(201, 179, 124, 0.2);
+            border: 2px solid #c9b37c;
+            color: #c9b37c;
+        }
+        
+        .input-modal-btn.confirm:active {
+            background: rgba(201, 179, 124, 0.4);
+        }
+        
+        .input-modal-btn.cancel {
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid #8b0000;
+            color: #ffaaaa;
+        }
+        
+        .input-modal-btn.cancel:active {
+            background: rgba(139, 0, 0, 0.4);
         }
         
         /* Ресурсы */
@@ -501,6 +577,98 @@
         .resource-btn:disabled {
             opacity: 0.3;
             pointer-events: none;
+        }
+        
+        /* Счётчик голода */
+        .hunger-panel {
+            background: rgba(15, 15, 25, 0.5);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(180, 0, 0, 0.3);
+            display: none;
+        }
+        
+        .hunger-panel.visible {
+            display: block;
+        }
+        
+        .hunger-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .hunger-title {
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 1em;
+        }
+        
+        .hunger-value {
+            color: #ff8888;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .hunger-dots {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .hunger-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid rgba(180, 0, 0, 0.3);
+            background: rgba(180, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .hunger-dot.filled {
+            background: rgba(180, 0, 0, 0.6);
+            border-color: #b40000;
+            box-shadow: 0 0 8px rgba(180, 0, 0, 0.3);
+        }
+        
+        .hunger-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .hunger-btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(180, 0, 0, 0.3);
+            background: rgba(180, 0, 0, 0.1);
+            color: #ff8888;
+            cursor: pointer;
+            font-size: 0.85em;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .hunger-btn:active {
+            background: rgba(180, 0, 0, 0.3);
+        }
+        
+        .hunger-check-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(180, 0, 0, 0.4);
+            background: rgba(180, 0, 0, 0.15);
+            color: #ff6666;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .hunger-check-btn:active {
+            background: rgba(180, 0, 0, 0.3);
         }
         
         /* Секция броска */
@@ -635,6 +803,14 @@
             color: #ff8888;
         }
         
+        /* Кубы голода */
+        .die-result.hunger {
+            background: rgba(180, 0, 0, 0.25) !important;
+            border-color: #b40000 !important;
+            color: #ff6666 !important;
+            box-shadow: 0 0 12px rgba(180, 0, 0, 0.35) !important;
+        }
+        
         .die-result .die-modifier {
             font-size: 0.45em;
             opacity: 0.9;
@@ -673,7 +849,12 @@
             display: block;
         }
         
-        /* Кнопки действий */
+        .hunger-info {
+            color: #ff6666;
+            font-size: 0.8em;
+            display: block;
+        }
+        
         .action-buttons {
             display: flex;
             gap: 10px;
@@ -733,29 +914,31 @@
             right: 15px;
             max-width: 400px;
             margin: 0 auto;
-            padding: 12px 18px;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 0.95em;
             animation: slideDown 0.3s ease;
             z-index: 2000;
-            border-left: 4px solid;
+            border-left: 5px solid;
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
             pointer-events: none;
             text-align: center;
+            line-height: 1.4;
         }
         
         .notification.failure { background: rgba(139, 0, 0, 0.9); color: #ffcccc; border-left-color: #ff4444; }
         .notification.success { background: rgba(0, 100, 0, 0.9); color: #ccffcc; border-left-color: #44ff44; }
         .notification.info { background: rgba(70, 70, 100, 0.9); color: #e0e0ff; border-left-color: #7eb8c9; }
         .notification.warning { background: rgba(180, 100, 0, 0.9); color: #ffe0b0; border-left-color: #ffa500; }
+        .notification.hunger { background: rgba(100, 0, 0, 0.9); color: #ffcccc; border-left-color: #b40000; }
+        .notification.hunger-safe { background: rgba(0, 80, 0, 0.9); color: #ccffcc; border-left-color: #44cc44; }
         
         @keyframes slideDown {
             from { transform: translateY(-100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         
-        /* История */
         .history-section {
             background: rgba(15, 15, 25, 0.5);
             padding: 15px;
@@ -822,83 +1005,25 @@
             white-space: nowrap;
         }
         
-        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
         @media (max-width: 600px) {
-            body {
-                padding: 5px;
-            }
-            
-            .container {
-                padding: 15px;
-                border-radius: 15px;
-            }
-            
-            .modal-overlay {
-                padding: 8px;
-                padding-bottom: calc(15px + var(--safe-bottom));
-            }
-            
-            .modal-container {
-                max-height: 82vh;
-                max-height: 82dvh;
-                border-radius: 16px;
-            }
-            
-            .modal-header {
-                padding: 16px 15px 8px;
-            }
-            
-            .modal-body {
-                padding: 8px 12px;
-            }
-            
-            .modal-footer {
-                padding: 12px;
-                padding-bottom: calc(12px + 10px);
-            }
-            
-            /* ОГРОМНАЯ КНОПКА ДЛЯ ТЕЛЕФОНОВ */
-            .close-modal-btn {
-                padding: 22px;
-                min-height: 64px;
-                font-size: 1.35em;
-                letter-spacing: 1px;
-            }
-            
-            .character-option {
-                padding: 16px;
-            }
-            
-            .option-icon {
-                font-size: 2.2em;
-            }
-            
-            .option-title {
-                font-size: 1.25em;
-            }
-            
-            .dots-container {
-                gap: 3px;
-            }
-            
-            .die-result {
-                width: 48px;
-                height: 48px;
-                font-size: 1.3em;
-            }
-        }
-        
-        @media (max-width: 350px) {
-            .close-modal-btn {
-                padding: 24px;
-                min-height: 72px;
-                font-size: 1.4em;
-            }
+            body { padding: 5px; }
+            .container { padding: 15px; border-radius: 15px; }
+            .modal-overlay { padding: 8px; padding-bottom: calc(15px + var(--safe-bottom)); }
+            .modal-container { max-height: 82vh; max-height: 82dvh; border-radius: 16px; }
+            .modal-header { padding: 16px 15px 8px; }
+            .modal-body { padding: 8px 12px; }
+            .modal-footer { padding: 12px; padding-bottom: calc(12px + 10px); }
+            .close-modal-btn { padding: 22px; min-height: 64px; font-size: 1.35em; }
+            .character-option { padding: 16px; }
+            .option-icon { font-size: 2.2em; }
+            .option-title { font-size: 1.25em; }
+            .dots-container { gap: 3px; }
+            .die-result { width: 48px; height: 48px; font-size: 1.3em; }
         }
     </style>
 </head>
 <body>
-    <!-- Модальное окно -->
+    <!-- Модальное окно выбора персонажа -->
     <div class="modal-overlay" id="characterModal">
         <div class="modal-container">
             <div class="modal-header">
@@ -925,13 +1050,13 @@
                     </div>
                 </div>
                 
-                <div class="rule-toggle-section">
-                    <div class="rule-toggle" onclick="toggleBotchRule()">
+                <div class="rule-toggle-section" id="ruleToggleSection">
+                    <div class="rule-toggle" onclick="toggleSpecialRule()">
                         <div class="rule-info">
-                            <span class="rule-icon">💀</span>
+                            <span class="rule-icon" id="ruleToggleIcon">💀</span>
                             <div>
-                                <div class="rule-label">1 — критический провал</div>
-                                <div class="rule-desc">Каждая 1 отнимает успех (нельзя перебросить)</div>
+                                <div class="rule-label" id="ruleToggleLabel">1 — критический провал</div>
+                                <div class="rule-desc" id="ruleToggleDesc">Каждая 1 отнимает успех (нельзя перебросить)</div>
                             </div>
                         </div>
                         <div class="toggle-switch" id="toggleSwitch">
@@ -947,6 +1072,19 @@
         </div>
     </div>
 
+    <!-- Модальное окно ввода числа (кубы голода / проверка) -->
+    <div class="input-modal-overlay" id="inputModal">
+        <div class="input-modal">
+            <div class="input-modal-title" id="inputModalTitle">Введите значение</div>
+            <div class="input-modal-desc" id="inputModalDesc"></div>
+            <input type="number" id="inputModalField" class="input-modal-field" min="0" max="5" value="0" inputmode="numeric">
+            <div class="input-modal-buttons">
+                <button class="input-modal-btn cancel" onclick="cancelInputModal()">Отмена</button>
+                <button class="input-modal-btn confirm" onclick="confirmInputModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <h1>🌑 WORLD OF DARKNESS</h1>
         <div class="subtitle">Storyteller System • D10 Dice Pool</div>
@@ -958,8 +1096,22 @@
             </div>
             
             <div class="rules-badge" onclick="openModal()">
-                <span class="rules-icon">💀</span>
+                <span class="rules-icon" id="rulesBadgeIcon">💀</span>
                 <span class="rules-text" id="rulesBadgeText">1 — крит. провал</span>
+            </div>
+        </div>
+        
+        <!-- Панель голода (только для вампиров) -->
+        <div class="hunger-panel" id="hungerPanel">
+            <div class="hunger-header">
+                <span class="hunger-title">🩸 Уровень голода</span>
+                <span class="hunger-value" id="hungerValue">0/5</span>
+            </div>
+            <div class="hunger-dots" id="hungerDots"></div>
+            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+                <button class="hunger-btn" onclick="adjustHunger(-1)">−</button>
+                <button class="hunger-btn" onclick="adjustHunger(1)">+</button>
+                <button class="hunger-check-btn" onclick="startHungerCheck()">🩸 Проверка на голод</button>
             </div>
         </div>
         
@@ -1003,7 +1155,7 @@
                     <input type="number" id="diceCount" class="dice-input" min="1" max="30" value="5" inputmode="numeric">
                     <span class="dice-label">D10</span>
                 </div>
-                <button class="roll-btn" onclick="rollD10()">Бросок</button>
+                <button class="roll-btn" onclick="startRoll()">Бросок</button>
             </div>
         </div>
         
@@ -1012,6 +1164,7 @@
             <div class="success-summary">
                 <span>Успехов: <span class="success-count" id="successCount">0</span></span>
                 <span class="botch-info" id="botchInfo"></span>
+                <span class="hunger-info" id="hungerDiceInfo"></span>
                 <span class="willpower-used-tag" id="willpowerUsedIndicator"></span>
             </div>
             
@@ -1038,7 +1191,7 @@
             </div>
         </div>
         
-        <div class="help-text">
+        <div class="help-text" id="helpText">
             <span>⚡ 2,4,6,8 = Успех</span> •
             <span>✨ 10 = Двойной успех</span> •
             <span>❌ 3,5,7,9 = Неудача</span>
@@ -1047,32 +1200,86 @@
     </div>
 
     <script>
+        // Состояние
         let willpower = 10;
         let specialty = 20;
         const maxSpecialty = 20;
         let currentCharacter = null;
         let botchRule = false;
+        let hungerRule = false;
+        let hungerLevel = 0;
         let currentRolls = [];
         let currentSuccesses = 0;
         let botchCount = 0;
+        let hungerDiceCount = 0;
         let willpowerUsedThisRoll = false;
         let history = [];
+        let inputModalCallback = null;
         const MAX_HISTORY = 15;
         
         const characters = {
-            vampire: { name: 'Вампир', icon: '🩸', specialtyName: 'Кровь', specialtyIcon: '🩸', className: 'vampire' },
-            hunter: { name: 'Охотник', icon: '⚔️', specialtyName: 'Добродетель', specialtyIcon: '⚔️', className: 'hunter' },
-            mage: { name: 'Маг', icon: '🔮', specialtyName: 'Квинтэссенция', specialtyIcon: '🔮', className: 'mage' }
+            vampire: { name: 'Вампир', icon: '🩸', specialtyName: 'Кровь', specialtyIcon: '🩸', className: 'vampire', hasHunger: true },
+            hunter: { name: 'Охотник', icon: '⚔️', specialtyName: 'Добродетель', specialtyIcon: '⚔️', className: 'hunter', hasHunger: false },
+            mage: { name: 'Маг', icon: '🔮', specialtyName: 'Квинтэссенция', specialtyIcon: '🔮', className: 'mage', hasHunger: false }
         };
         
         function init() {
             updateWillpowerDisplay();
             updateSpecialtyDisplay();
             updateHistoryDisplay();
-            updateBotchUI();
+            updateHungerDisplay();
+            updateUI();
             
             if (!localStorage.getItem('characterSelected')) {
                 setTimeout(() => openModal(), 300);
+            }
+        }
+        
+        function updateUI() {
+            const isVampire = currentCharacter === 'vampire';
+            
+            // Показываем/скрываем панель голода
+            const hungerPanel = document.getElementById('hungerPanel');
+            if (isVampire) {
+                hungerPanel.classList.add('visible');
+            } else {
+                hungerPanel.classList.remove('visible');
+            }
+            
+            // Обновляем текст правила
+            const ruleIcon = document.getElementById('rulesBadgeIcon');
+            const ruleText = document.getElementById('rulesBadgeText');
+            const toggleIcon = document.getElementById('ruleToggleIcon');
+            const toggleLabel = document.getElementById('ruleToggleLabel');
+            const toggleDesc = document.getElementById('ruleToggleDesc');
+            
+            if (isVampire) {
+                hungerRule = botchRule;
+                botchRule = false;
+                
+                ruleIcon.textContent = '🩸';
+                ruleText.textContent = hungerRule ? 'Кубы голода (вкл)' : 'Кубы голода (выкл)';
+                ruleText.className = hungerRule ? 'rules-text active' : 'rules-text';
+                
+                toggleIcon.textContent = '🩸';
+                toggleLabel.textContent = 'Кубы голода';
+                toggleDesc.textContent = 'Замена части кубов на красные кубы голода';
+            } else {
+                hungerRule = false;
+                
+                ruleIcon.textContent = '💀';
+                ruleText.textContent = botchRule ? '1 — крит. провал (вкл)' : '1 — крит. провал (выкл)';
+                ruleText.className = botchRule ? 'rules-text active' : 'rules-text';
+                
+                toggleIcon.textContent = '💀';
+                toggleLabel.textContent = '1 — критический провал';
+                toggleDesc.textContent = 'Каждая 1 отнимает успех (нельзя перебросить)';
+            }
+            
+            // Обновляем help text
+            document.getElementById('botchHelpText').innerHTML = '';
+            if (!isVampire && botchRule) {
+                document.getElementById('botchHelpText').innerHTML = '• <span style="color:#ff6b6b;">💀 1 = -1 успех</span>';
             }
         }
         
@@ -1096,32 +1303,22 @@
             saveSettings();
         }
         
-        function toggleBotchRule() {
-            botchRule = !botchRule;
+        function toggleSpecialRule() {
+            if (currentCharacter === 'vampire') {
+                hungerRule = !hungerRule;
+            } else {
+                botchRule = !botchRule;
+            }
             updateToggleSwitch();
-            updateBotchUI();
+            updateUI();
             saveSettings();
         }
         
         function updateToggleSwitch() {
             const toggleSwitch = document.getElementById('toggleSwitch');
-            if (botchRule) toggleSwitch.classList.add('active');
+            const isActive = currentCharacter === 'vampire' ? hungerRule : botchRule;
+            if (isActive) toggleSwitch.classList.add('active');
             else toggleSwitch.classList.remove('active');
-        }
-        
-        function updateBotchUI() {
-            const badge = document.getElementById('rulesBadgeText');
-            const helpText = document.getElementById('botchHelpText');
-            
-            if (botchRule) {
-                badge.textContent = '1 — крит. провал (вкл)';
-                badge.style.color = '#ff6b6b';
-                helpText.innerHTML = '• <span style="color:#ff6b6b;">💀 1 = -1 успех</span>';
-            } else {
-                badge.textContent = '1 — крит. провал (выкл)';
-                badge.style.color = '#6a6a8a';
-                helpText.innerHTML = '';
-            }
         }
         
         function selectCharacter(type) {
@@ -1148,6 +1345,7 @@
             document.getElementById('specialtyActionCost').textContent = `-1 ${char.specialtyName} → Переброс`;
             
             updateSpecialtyDisplay();
+            updateUI();
             saveSettings();
             
             if (navigator.vibrate) navigator.vibrate(10);
@@ -1156,6 +1354,8 @@
         function saveSettings() {
             localStorage.setItem('characterType', currentCharacter || '');
             localStorage.setItem('botchRule', botchRule);
+            localStorage.setItem('hungerRule', hungerRule);
+            localStorage.setItem('hungerLevel', hungerLevel);
         }
         
         function loadSettings() {
@@ -1165,10 +1365,236 @@
             }
             
             const savedBotch = localStorage.getItem('botchRule');
-            if (savedBotch !== null) {
-                botchRule = savedBotch === 'true';
+            if (savedBotch !== null) botchRule = savedBotch === 'true';
+            
+            const savedHunger = localStorage.getItem('hungerRule');
+            if (savedHunger !== null) hungerRule = savedHunger === 'true';
+            
+            const savedHungerLevel = localStorage.getItem('hungerLevel');
+            if (savedHungerLevel !== null) hungerLevel = parseInt(savedHungerLevel) || 0;
+            
+            updateUI();
+        }
+        
+        function updateHungerDisplay() {
+            document.getElementById('hungerValue').textContent = `${hungerLevel}/5`;
+            
+            const dotsContainer = document.getElementById('hungerDots');
+            dotsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const dot = document.createElement('div');
+                dot.className = `hunger-dot ${i < hungerLevel ? 'filled' : ''}`;
+                dot.addEventListener('click', () => { hungerLevel = i + 1; updateHungerDisplay(); saveSettings(); });
+                dotsContainer.appendChild(dot);
             }
-            updateBotchUI();
+        }
+        
+        function adjustHunger(delta) {
+            hungerLevel = Math.max(0, Math.min(5, hungerLevel + delta));
+            updateHungerDisplay();
+            saveSettings();
+        }
+        
+        // Модальное окно ввода
+        function showInputModal(title, desc, max, callback) {
+            document.getElementById('inputModalTitle').textContent = title;
+            document.getElementById('inputModalDesc').textContent = desc;
+            const field = document.getElementById('inputModalField');
+            field.max = max;
+            field.value = Math.min(max, 0);
+            document.getElementById('inputModal').classList.add('active');
+            inputModalCallback = callback;
+            setTimeout(() => field.focus(), 200);
+        }
+        
+        function cancelInputModal() {
+            document.getElementById('inputModal').classList.remove('active');
+            inputModalCallback = null;
+        }
+        
+        function confirmInputModal() {
+            const value = parseInt(document.getElementById('inputModalField').value) || 0;
+            document.getElementById('inputModal').classList.remove('active');
+            if (inputModalCallback) {
+                inputModalCallback(value);
+                inputModalCallback = null;
+            }
+        }
+        
+        // Запуск броска (для вампиров спрашиваем кубы голода)
+        function startRoll() {
+            const diceCount = parseInt(document.getElementById('diceCount').value) || 5;
+            const validCount = Math.max(1, Math.min(30, diceCount));
+            document.getElementById('diceCount').value = validCount;
+            
+            if (currentCharacter === 'vampire' && hungerRule) {
+                const maxHungerDice = Math.min(5, validCount);
+                showInputModal(
+                    '🩸 Кубы голода',
+                    `Сколько кубов заменить? (0-${maxHungerDice})`,
+                    maxHungerDice,
+                    (value) => {
+                        hungerDiceCount = Math.max(0, Math.min(maxHungerDice, value));
+                        rollD10(validCount);
+                    }
+                );
+            } else {
+                hungerDiceCount = 0;
+                rollD10(validCount);
+            }
+        }
+        
+        // Запуск проверки на голод
+        function startHungerCheck() {
+            showInputModal(
+                '🩸 Проверка на голод',
+                'Сколько кубов бросать? (1-10)',
+                10,
+                (value) => {
+                    const count = Math.max(1, Math.min(10, value));
+                    performHungerCheck(count);
+                }
+            );
+        }
+        
+        function performHungerCheck(count) {
+            const rolls = [];
+            let successes = 0;
+            
+            for (let i = 0; i < count; i++) {
+                const roll = Math.floor(Math.random() * 10) + 1;
+                const isSuccess = roll >= 6;
+                if (isSuccess) successes++;
+                rolls.push({ value: roll, isSuccess });
+            }
+            
+            const diceResults = rolls.map(r => r.isSuccess ? `${r.value}✓` : r.value).join(' ');
+            
+            if (successes > 0) {
+                showNotification('🩸 Голод не растёт, зверь не просыпается', 'hunger-safe');
+                addToHistory(`Проверка голода ${count}D10`, successes, rolls.map(r => ({
+                    value: r.value,
+                    type: r.isSuccess ? 'success' : 'failure',
+                    successes: r.isSuccess ? 1 : 0,
+                    isBotch: false,
+                    rerolled: false,
+                    canReroll: false,
+                    isHunger: true
+                })), 0, 'Зверь спит');
+            } else {
+                hungerLevel = Math.min(5, hungerLevel + 1);
+                updateHungerDisplay();
+                saveSettings();
+                showNotification('🩸 Голод растёт! +1 к уровню голода', 'hunger');
+                addToHistory(`Проверка голода ${count}D10`, 0, rolls.map(r => ({
+                    value: r.value,
+                    type: 'failure',
+                    successes: 0,
+                    isBotch: false,
+                    rerolled: false,
+                    canReroll: false,
+                    isHunger: true
+                })), 0, 'Голод +1');
+            }
+        }
+        
+        function evaluateDie(value) {
+            if (value === 10) return { type: 'critical', successes: 2, isBotch: false };
+            if (value % 2 === 0) return { type: 'success', successes: 1, isBotch: false };
+            if (value === 1 && botchRule && currentCharacter !== 'vampire') return { type: 'botch', successes: -1, isBotch: true };
+            return { type: 'failure', successes: 0, isBotch: false };
+        }
+        
+        function resetRollState() {
+            willpowerUsedThisRoll = false;
+            document.getElementById('willpowerUsedIndicator').textContent = '';
+            document.getElementById('willpowerUsedText').textContent = '';
+            document.getElementById('botchInfo').textContent = '';
+            document.getElementById('hungerDiceInfo').textContent = '';
+        }
+        
+        function rollD10(count) {
+            resetRollState();
+            
+            currentRolls = [];
+            currentSuccesses = 0;
+            botchCount = 0;
+            
+            for (let i = 0; i < count; i++) {
+                const roll = Math.floor(Math.random() * 10) + 1;
+                const evaluation = evaluateDie(roll);
+                const isHungerDie = (currentCharacter === 'vampire' && hungerRule && i < hungerDiceCount);
+                
+                currentRolls.push({
+                    value: roll,
+                    type: evaluation.type,
+                    successes: evaluation.successes,
+                    isBotch: evaluation.isBotch,
+                    rerolled: false,
+                    canReroll: !evaluation.isBotch && evaluation.type === 'failure',
+                    isHunger: isHungerDie
+                });
+                
+                currentSuccesses += evaluation.successes;
+                if (evaluation.isBotch) botchCount++;
+            }
+            
+            displayResults();
+            updateActionButtons();
+            
+            document.getElementById('resultSection').classList.add('visible');
+            
+            const hungerInfo = hungerDiceCount > 0 ? ` [голод:${hungerDiceCount}]` : '';
+            addToHistory(`Бросок ${count}D10${hungerInfo}`, currentSuccesses, currentRolls, botchCount);
+            
+            if (navigator.vibrate) navigator.vibrate(15);
+        }
+        
+        function displayResults() {
+            const container = document.getElementById('diceResults');
+            container.innerHTML = '';
+            
+            currentRolls.forEach((roll) => {
+                const dieElement = document.createElement('div');
+                let classes = `die-result ${roll.type}`;
+                if (roll.isHunger) classes += ' hunger';
+                dieElement.className = classes;
+                
+                let modifier = '';
+                if (roll.type === 'critical') modifier = '+2';
+                else if (roll.type === 'success') modifier = '+1';
+                else if (roll.type === 'botch') modifier = '-1';
+                
+                dieElement.innerHTML = `
+                    <span>${roll.value}</span>
+                    ${modifier ? `<span class="die-modifier">${modifier}</span>` : ''}
+                `;
+                
+                container.appendChild(dieElement);
+            });
+            
+            document.getElementById('successCount').textContent = currentSuccesses;
+            
+            if (botchCount > 0 && currentCharacter !== 'vampire') {
+                document.getElementById('botchInfo').textContent = `(провалов: ${botchCount})`;
+            }
+            
+            if (hungerDiceCount > 0) {
+                document.getElementById('hungerDiceInfo').textContent = `(кубов голода: ${hungerDiceCount})`;
+            }
+        }
+        
+        function updateActionButtons() {
+            const willpowerBtn = document.getElementById('spendWillpowerBtn');
+            const specialtyBtn = document.getElementById('spendSpecialtyBtn');
+            
+            const canUseWillpower = willpower > 0 && currentRolls.length > 0 && !willpowerUsedThisRoll;
+            willpowerBtn.disabled = !canUseWillpower;
+            
+            const hasRerollableDice = currentRolls.some(roll => roll.canReroll && roll.type === 'failure');
+            const canUseSpecialty = specialty > 0 && currentRolls.length > 0 && hasRerollableDice;
+            specialtyBtn.disabled = !canUseSpecialty;
         }
         
         function updateWillpowerDisplay() {
@@ -1211,102 +1637,10 @@
             updateActionButtons();
         }
         
-        function setWillpower(value) { willpower = Math.max(0, Math.min(10, value)); updateWillpowerDisplay(); }
-        function setSpecialty(value) { specialty = Math.max(0, Math.min(maxSpecialty, value)); updateSpecialtyDisplay(); }
+        function setWillpower(value) { willpower = Math.max(0, Math.min(10, value)); updateWillpowerDisplay(); saveSettings(); }
+        function setSpecialty(value) { specialty = Math.max(0, Math.min(maxSpecialty, value)); updateSpecialtyDisplay(); saveSettings(); }
         function adjustWillpower(delta) { setWillpower(willpower + delta); }
         function adjustSpecialty(delta) { setSpecialty(specialty + delta); }
-        
-        function evaluateDie(value) {
-            if (value === 10) return { type: 'critical', successes: 2, isBotch: false };
-            if (value % 2 === 0) return { type: 'success', successes: 1, isBotch: false };
-            if (value === 1 && botchRule) return { type: 'botch', successes: -1, isBotch: true };
-            return { type: 'failure', successes: 0, isBotch: false };
-        }
-        
-        function resetRollState() {
-            willpowerUsedThisRoll = false;
-            document.getElementById('willpowerUsedIndicator').textContent = '';
-            document.getElementById('willpowerUsedText').textContent = '';
-            document.getElementById('botchInfo').textContent = '';
-        }
-        
-        function rollD10() {
-            const count = parseInt(document.getElementById('diceCount').value) || 5;
-            const validCount = Math.max(1, Math.min(30, count));
-            document.getElementById('diceCount').value = validCount;
-            
-            resetRollState();
-            
-            currentRolls = [];
-            currentSuccesses = 0;
-            botchCount = 0;
-            
-            for (let i = 0; i < validCount; i++) {
-                const roll = Math.floor(Math.random() * 10) + 1;
-                const evaluation = evaluateDie(roll);
-                
-                currentRolls.push({
-                    value: roll,
-                    type: evaluation.type,
-                    successes: evaluation.successes,
-                    isBotch: evaluation.isBotch,
-                    rerolled: false,
-                    canReroll: !evaluation.isBotch && evaluation.type === 'failure'
-                });
-                
-                currentSuccesses += evaluation.successes;
-                if (evaluation.isBotch) botchCount++;
-            }
-            
-            displayResults();
-            updateActionButtons();
-            
-            document.getElementById('resultSection').classList.add('visible');
-            
-            addToHistory(`Бросок ${validCount}D10`, currentSuccesses, currentRolls, botchCount);
-            
-            if (navigator.vibrate) navigator.vibrate(15);
-        }
-        
-        function displayResults() {
-            const container = document.getElementById('diceResults');
-            container.innerHTML = '';
-            
-            currentRolls.forEach((roll) => {
-                const dieElement = document.createElement('div');
-                dieElement.className = `die-result ${roll.type}`;
-                
-                let modifier = '';
-                if (roll.type === 'critical') modifier = '+2';
-                else if (roll.type === 'success') modifier = '+1';
-                else if (roll.type === 'botch') modifier = '-1';
-                
-                dieElement.innerHTML = `
-                    <span>${roll.value}</span>
-                    ${modifier ? `<span class="die-modifier">${modifier}</span>` : ''}
-                `;
-                
-                container.appendChild(dieElement);
-            });
-            
-            document.getElementById('successCount').textContent = currentSuccesses;
-            
-            if (botchCount > 0) {
-                document.getElementById('botchInfo').textContent = `(провалов: ${botchCount})`;
-            }
-        }
-        
-        function updateActionButtons() {
-            const willpowerBtn = document.getElementById('spendWillpowerBtn');
-            const specialtyBtn = document.getElementById('spendSpecialtyBtn');
-            
-            const canUseWillpower = willpower > 0 && currentRolls.length > 0 && !willpowerUsedThisRoll;
-            willpowerBtn.disabled = !canUseWillpower;
-            
-            const hasRerollableDice = currentRolls.some(roll => roll.canReroll && roll.type === 'failure');
-            const canUseSpecialty = specialty > 0 && currentRolls.length > 0 && hasRerollableDice;
-            specialtyBtn.disabled = !canUseSpecialty;
-        }
         
         function spendWillpower() {
             if (willpower <= 0 || currentRolls.length === 0 || willpowerUsedThisRoll) return;
@@ -1347,6 +1681,7 @@
             
             const oldRoll = currentRolls[failureIndex];
             const oldValue = oldRoll.value;
+            const wasHunger = oldRoll.isHunger;
             
             const newValue = Math.floor(Math.random() * 10) + 1;
             const evaluation = evaluateDie(newValue);
@@ -1359,7 +1694,8 @@
                 successes: evaluation.successes,
                 isBotch: evaluation.isBotch,
                 rerolled: true,
-                canReroll: false
+                canReroll: false,
+                isHunger: wasHunger
             };
             
             currentSuccesses += evaluation.successes;
@@ -1394,19 +1730,20 @@
             
             document.body.appendChild(notification);
             
-            setTimeout(() => notification.remove(), 2500);
+            setTimeout(() => notification.remove(), 3000);
         }
         
         function addToHistory(action, successes, rolls, botches = 0, note = '') {
             const diceResults = rolls.map(r => {
-                if (r.type === 'critical') return `${r.value}✨`;
-                if (r.type === 'success') return `${r.value}✓`;
-                if (r.type === 'botch') return `${r.value}💀`;
-                return `${r.value}`;
+                let marker = '';
+                if (r.type === 'critical') marker = '✨';
+                else if (r.type === 'success') marker = '✓';
+                else if (r.type === 'botch') marker = '💀';
+                return r.isHunger ? `🔴${r.value}${marker}` : `${r.value}${marker}`;
             }).join(' ');
             
-            let botchText = '';
-            if (botchRule && botches > 0) botchText = ` [пр:${botches}]`;
+            let extraText = '';
+            if (botchRule && botches > 0) extraText += ` [пр:${botches}]`;
             
             const record = {
                 action, successes, diceResults, note, botches,
@@ -1430,10 +1767,9 @@
             
             container.innerHTML = history.map(record => {
                 const noteText = record.note ? ` (${record.note})` : '';
-                const botchText = botchRule && record.botches > 0 ? ` 💀-${record.botches}` : '';
                 return `
                     <div class="history-item">
-                        ${record.timestamp} | ${record.action}: ${record.successes} успехов${botchText}${noteText}<br>
+                        ${record.timestamp} | ${record.action}: ${record.successes} успехов${noteText}<br>
                         🎲 ${record.diceResults}
                     </div>
                 `;
