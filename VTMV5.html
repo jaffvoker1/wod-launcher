@@ -316,6 +316,7 @@
             border-color: #8b0000;
         }
 
+        /* ===== ОБЩИЕ СТИЛИ ДЛЯ ТРЕКЕРОВ ===== */
         .track-dots {
             display: flex;
             justify-content: center;
@@ -325,44 +326,54 @@
         }
 
         .track-dots .dot {
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             border-radius: 2px;
-        }
-
-        .track-dots .dot.filled {
-            background-color: #8b0000;
-        }
-
-        /* ===== СТИЛИ ДЛЯ ЧЕЛОВЕЧНОСТИ ===== */
-        .humanity-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .humanity-wrapper .track-dots {
-            margin-top: 0;
-        }
-
-        .humanity-wrapper .track-dots .dot.doubt {
-            background-color: #2a2a2a;
-            border-color: #8b0000;
-            color: #ff4444;
             font-size: 14px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #cccccc;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .humanity-wrapper .track-dots .dot.filled {
+        .track-dots .dot:hover {
+            border-color: #8b0000;
+        }
+
+        .track-dots .dot.filled {
             background-color: #8b0000;
             border-color: #8b0000;
         }
 
-        .humanity-hint {
+        .track-dots .dot.slash {
+            background-color: #2a2a2a;
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+
+        .track-dots .dot.cross {
+            background-color: #2a2a2a;
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .track-dots .dot.empty {
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+
+        .track-dots .dot.doubt {
+            background-color: #2a2a2a;
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .track-hint {
             color: #666;
             font-size: 10px;
             text-align: center;
@@ -388,16 +399,6 @@
             font-size: 12px;
             margin-bottom: 6px;
             text-transform: uppercase;
-        }
-
-        .health-will-block .track-dots .dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 2px;
-        }
-
-        .health-will-block .track-dots .dot.filled {
-            background-color: #8b0000;
         }
 
         .blood-potential-section {
@@ -1071,10 +1072,12 @@
             <div class="health-will-block">
                 <h4>ЗДОРОВЬЕ</h4>
                 <div class="track-dots" id="health-dots"></div>
+                <div class="track-hint">ЛКМ: 0→●→/→✕→0 | ПКМ: 0→✕→/→●→0</div>
             </div>
             <div class="health-will-block">
                 <h4>ВОЛЯ</h4>
                 <div class="track-dots" id="will-dots"></div>
+                <div class="track-hint">ЛКМ: 0→●→/→✕→0 | ПКМ: 0→✕→/→●→0</div>
             </div>
         </div>
 
@@ -1105,12 +1108,13 @@
             <div class="track-block">
                 <h4>ГОЛОД</h4>
                 <div class="track-dots" id="hunger-dots"></div>
+                <div class="track-hint">ЛКМ/ПКМ: 0↔●</div>
             </div>
             <div class="track-block">
                 <h4>ЧЕЛОВЕЧНОСТЬ</h4>
-                <div class="humanity-wrapper">
+                <div class="humanity-wrapper" style="display:flex; flex-direction:column; align-items:center; gap:4px;">
                     <div class="track-dots" id="humanity-dots"></div>
-                    <div class="humanity-hint">ЛКМ по пустой — заполнить до (●) | ЛКМ по ✕ — убрать все слева | ПКМ по ● — убрать | ПКМ по пустой — ✕ с конца | ПКМ по ✕ — ничего</div>
+                    <div class="track-hint">ЛКМ по пустой — заполнить до (●) | ЛКМ по ✕ — убрать все слева | ПКМ по ● — убрать | ПКМ по пустой — ✕ с конца</div>
                 </div>
             </div>
         </div>
@@ -1238,11 +1242,16 @@
             abilities: {},
             disciplines: [],
             merits: [],
-            health: 0,
-            will: 0,
-            hunger: 0,
-            humanity: Array(10).fill(0),
-            bloodPotential: 0
+            // Здоровье и Воля: массив из 10 чисел
+            // 0 = пусто, 1 = закрашен (●), -1 = косая черта (/), -2 = крест (✕)
+            health: Array(10).fill(0),
+            will: Array(10).fill(0),
+            // Голод: массив из 5 чисел, только 0 и 1
+            hunger: Array(5).fill(0),
+            // Потенциал Крови: массив из 10 чисел, только 0 и 1
+            bloodPotential: Array(10).fill(0),
+            // Человечность: массив из 10 чисел: 1 = точка, 0 = пусто, -1 = крестик
+            humanity: Array(10).fill(0)
         };
 
         let currentRoll = { traitName: '', diceCount: 0, rolls: [], successes: 0, willpowerSpent: false, bloodSpent: false, completed: false };
@@ -1453,40 +1462,166 @@
 
         // ===== ВСЕ ТРЕКИ =====
         function initTracks() {
-            const tracks = [
-                { id: 'health-dots', key: 'health', max: 10 },
-                { id: 'will-dots', key: 'will', max: 10 },
-                { id: 'hunger-dots', key: 'hunger', max: 5 },
-                { id: 'bloodPotential-dots', key: 'bloodPotential', max: 10 }
-            ];
-
-            tracks.forEach(t => {
-                const container = document.getElementById(t.id);
-                if (!container) return;
-                for (let i = 0; i < t.max; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = 'dot square';
-                    dot.dataset.index = i;
-                    dot.dataset.key = t.key;
-                    dot.addEventListener('click', handleTrackDotClick);
-                    dot.addEventListener('contextmenu', (e) => {
-                        e.preventDefault();
-                        handleTrackDotRightClick(e);
-                    });
-                    container.appendChild(dot);
-                }
-            });
-
+            // Здоровье (10 клеток) — сложный трекер
+            initComplexTrack('health-dots', 'health', 10);
+            // Воля (10 клеток) — сложный трекер
+            initComplexTrack('will-dots', 'will', 10);
+            // Голод (5 клеток) — простой трекер (только 0 и 1)
+            initSimpleTrack('hunger-dots', 'hunger', 5);
+            // Потенциал Крови (10 клеток) — простой трекер (только 0 и 1)
+            initSimpleTrack('bloodPotential-dots', 'bloodPotential', 10);
+            // Человечность (специальный трек)
             initHumanityTrack();
         }
 
-        // ===== ЧЕЛОВЕЧНОСТЬ =====
+        /**
+         * Сложный трекер для Здоровья и Воли:
+         * 0 → 1 → -1 → -2 → 0 (ЛКМ)
+         * 0 → -2 → -1 → 1 → 0 (ПКМ)
+         */
+        function initComplexTrack(containerId, key, max) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < max; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.index = i;
+                dot.dataset.key = key;
+                dot.addEventListener('click', handleComplexTrackClick);
+                dot.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleComplexTrackRightClick(e);
+                });
+                container.appendChild(dot);
+            }
+            updateComplexTrackDisplay(key);
+        }
+
+        function handleComplexTrackClick(e) {
+            const key = e.target.dataset.key;
+            const idx = parseInt(e.target.dataset.index);
+            const currentValue = values[key][idx] || 0;
+            
+            // Циклическое увеличение: 0 → 1 → -1 → -2 → 0
+            if (currentValue === 0) values[key][idx] = 1;
+            else if (currentValue === 1) values[key][idx] = -1;
+            else if (currentValue === -1) values[key][idx] = -2;
+            else if (currentValue === -2) values[key][idx] = 0;
+            
+            updateComplexTrackDisplay(key);
+        }
+
+        function handleComplexTrackRightClick(e) {
+            const key = e.target.dataset.key;
+            const idx = parseInt(e.target.dataset.index);
+            const currentValue = values[key][idx] || 0;
+            
+            // Циклическое уменьшение: 0 → -2 → -1 → 1 → 0
+            if (currentValue === 0) values[key][idx] = -2;
+            else if (currentValue === -2) values[key][idx] = -1;
+            else if (currentValue === -1) values[key][idx] = 1;
+            else if (currentValue === 1) values[key][idx] = 0;
+            
+            updateComplexTrackDisplay(key);
+        }
+
+        function updateComplexTrackDisplay(key) {
+            const container = document.getElementById(`${key}-dots`);
+            if (!container) return;
+            
+            const dots = container.querySelectorAll('.dot');
+            const valuesArray = values[key] || [];
+            
+            dots.forEach((dot, i) => {
+                const val = valuesArray[i] || 0;
+                dot.className = 'dot';
+                dot.textContent = '';
+                
+                if (val === 1) {
+                    dot.classList.add('filled');
+                } else if (val === -1) {
+                    dot.classList.add('slash');
+                    dot.textContent = '/';
+                } else if (val === -2) {
+                    dot.classList.add('cross');
+                    dot.textContent = '✕';
+                } else {
+                    dot.classList.add('empty');
+                }
+            });
+        }
+
+        /**
+         * Простой трекер для Голода и Потенциала Крови:
+         * только 0 и 1
+         */
+        function initSimpleTrack(containerId, key, max) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < max; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.index = i;
+                dot.dataset.key = key;
+                dot.addEventListener('click', handleSimpleTrackClick);
+                dot.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleSimpleTrackRightClick(e);
+                });
+                container.appendChild(dot);
+            }
+            updateSimpleTrackDisplay(key);
+        }
+
+        function handleSimpleTrackClick(e) {
+            const key = e.target.dataset.key;
+            const idx = parseInt(e.target.dataset.index);
+            const currentValue = values[key][idx] || 0;
+            
+            // 0 → 1 → 0
+            values[key][idx] = currentValue === 0 ? 1 : 0;
+            updateSimpleTrackDisplay(key);
+        }
+
+        function handleSimpleTrackRightClick(e) {
+            const key = e.target.dataset.key;
+            const idx = parseInt(e.target.dataset.index);
+            const currentValue = values[key][idx] || 0;
+            
+            // 0 → 1 → 0 (то же самое, что и ЛКМ)
+            values[key][idx] = currentValue === 0 ? 1 : 0;
+            updateSimpleTrackDisplay(key);
+        }
+
+        function updateSimpleTrackDisplay(key) {
+            const container = document.getElementById(`${key}-dots`);
+            if (!container) return;
+            
+            const dots = container.querySelectorAll('.dot');
+            const valuesArray = values[key] || [];
+            
+            dots.forEach((dot, i) => {
+                const val = valuesArray[i] || 0;
+                dot.className = 'dot';
+                dot.textContent = '';
+                
+                if (val === 1) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.add('empty');
+                }
+            });
+        }
+
+        // ===== ЧЕЛОВЕЧНОСТЬ (специальный трек) =====
         function initHumanityTrack() {
             const container = document.getElementById('humanity-dots');
             container.innerHTML = '';
             for (let i = 0; i < 10; i++) {
                 const dot = document.createElement('div');
-                dot.className = 'dot square';
+                dot.className = 'dot';
                 dot.dataset.index = i;
                 dot.dataset.key = 'humanity';
                 dot.addEventListener('click', handleHumanityClick);
@@ -1499,17 +1634,10 @@
             updateHumanityDisplay();
         }
 
-        /**
-         * ЛКМ по Человечности:
-         * - Если нажали на крестик (-1) → убираем его и все крестики слева (становятся 0)
-         * - Если нажали на пустую клетку (0) → заполняем от начала до выбранной точками (1)
-         * - Если нажали на закрашенную клетку (1) → ничего не делаем
-         */
         function handleHumanityClick(e) {
             const idx = parseInt(e.target.dataset.index);
             const currentValue = values.humanity[idx] || 0;
 
-            // Если нажали на крестик (-1) — убираем его и все крестики слева
             if (currentValue === -1) {
                 for (let i = 0; i <= idx; i++) {
                     if (values.humanity[i] === -1) {
@@ -1520,14 +1648,11 @@
                 return;
             }
 
-            // Если нажали на точку (1) — ничего не делаем
             if (currentValue === 1) {
                 return;
             }
 
-            // Если нажали на пустую клетку (0) — заполняем все до неё точками (1)
             if (currentValue === 0) {
-                // Проверяем, нет ли крестиков до этой позиции
                 let hasDoubtBefore = false;
                 for (let i = 0; i <= idx; i++) {
                     if (values.humanity[i] === -1) {
@@ -1536,7 +1661,6 @@
                     }
                 }
 
-                // Если есть крестики до — сначала убираем их (делаем 0), потом ставим точки
                 if (hasDoubtBefore) {
                     for (let i = 0; i <= idx; i++) {
                         if (values.humanity[i] === -1) {
@@ -1545,7 +1669,6 @@
                     }
                 }
 
-                // Заполняем точками от 0 до idx
                 for (let i = 0; i <= idx; i++) {
                     values.humanity[i] = 1;
                 }
@@ -1553,29 +1676,20 @@
             }
         }
 
-        /**
-         * ПКМ по Человечности:
-         * - Если нажали на закрашенную клетку (1) → убираем её (становится 0)
-         * - Если нажали на крестик (-1) → НИЧЕГО НЕ ДЕЛАЕМ
-         * - Если нажали на пустую клетку (0) → ставим крестик (-1) с конца (справа налево)
-         */
         function handleHumanityRightClick(e) {
             const idx = parseInt(e.target.dataset.index);
             const currentValue = values.humanity[idx] || 0;
 
-            // Если нажали на закрашенную клетку (1) — убираем её
             if (currentValue === 1) {
                 values.humanity[idx] = 0;
                 updateHumanityDisplay();
                 return;
             }
 
-            // Если нажали на крестик (-1) — ничего не делаем
             if (currentValue === -1) {
                 return;
             }
 
-            // Если нажали на пустую клетку (0) — ищем с конца последнюю клетку без крестика
             if (currentValue === 0) {
                 let targetIdx = -1;
                 for (let i = 9; i >= 0; i--) {
@@ -1599,7 +1713,7 @@
             const dots = container.querySelectorAll('.dot');
             dots.forEach((dot, i) => {
                 const val = values.humanity[i] || 0;
-                dot.classList.remove('filled', 'doubt');
+                dot.className = 'dot';
                 dot.textContent = '';
                 
                 if (val === 1) {
@@ -1607,30 +1721,10 @@
                 } else if (val === -1) {
                     dot.classList.add('doubt');
                     dot.textContent = '✕';
+                } else {
+                    dot.classList.add('empty');
                 }
             });
-        }
-
-        // Обычные треки
-        function handleTrackDotClick(e) {
-            const key = e.target.dataset.key;
-            const idx = parseInt(e.target.dataset.index);
-            const cur = values[key] || 0;
-            values[key] = idx === cur - 1 ? cur - 1 : idx + 1;
-            updateTrackDisplay(key);
-        }
-
-        function handleTrackDotRightClick(e) {
-            const key = e.target.dataset.key;
-            values[key] = Math.max(0, (values[key] || 0) - 1);
-            updateTrackDisplay(key);
-        }
-
-        function updateTrackDisplay(key) {
-            const container = document.getElementById(`${key}-dots`);
-            if (!container) return;
-            const val = values[key] || 0;
-            container.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('filled', i < val));
         }
 
         // ===== УСТАНОВКА НАЧАЛЬНЫХ ЗНАЧЕНИЙ =====
@@ -1639,11 +1733,11 @@
             v5Attributes.social.forEach(a => values.attributes[a] = 1);
             v5Attributes.mental.forEach(a => values.attributes[a] = 1);
             
-            values.health = 0;
-            values.will = 0;
-            values.hunger = 0;
+            values.health = Array(10).fill(0);
+            values.will = Array(10).fill(0);
+            values.hunger = Array(5).fill(0);
             values.humanity = Array(10).fill(0);
-            values.bloodPotential = 0;
+            values.bloodPotential = Array(10).fill(0);
 
             setTimeout(() => {
                 document.querySelectorAll('.attr-row .dots-container, .ability-row .dots-container').forEach(c => {
@@ -1653,10 +1747,10 @@
                 for (let i = 0; i < 6; i++) {
                     updateDiscDisplay(i);
                 }
-                updateTrackDisplay('health');
-                updateTrackDisplay('will');
-                updateTrackDisplay('hunger');
-                updateTrackDisplay('bloodPotential');
+                updateComplexTrackDisplay('health');
+                updateComplexTrackDisplay('will');
+                updateSimpleTrackDisplay('hunger');
+                updateSimpleTrackDisplay('bloodPotential');
                 updateHumanityDisplay();
             }, 10);
         }
@@ -1842,17 +1936,20 @@
         }
 
         function updateDiceActionButtons() {
-            document.getElementById('spendWillpowerDiceBtn').disabled = currentRoll.willpowerSpent || values.will <= 0 || currentRoll.completed;
+            const willPoints = values.will.filter(v => v === 1).length;
+            document.getElementById('spendWillpowerDiceBtn').disabled = currentRoll.willpowerSpent || willPoints <= 0 || currentRoll.completed;
             const hasF = currentRoll.rolls.some(r => r.type === 'failure');
             document.getElementById('spendBloodDiceBtn').disabled = currentRoll.bloodSpent || bloodPool <= 0 || !hasF || currentRoll.completed;
         }
 
         function spendWillpowerOnRoll() {
-            if (currentRoll.willpowerSpent || values.will <= 0 || currentRoll.completed) return;
-            values.will--;
+            const willIndex = values.will.indexOf(1);
+            if (currentRoll.willpowerSpent || willIndex === -1 || currentRoll.completed) return;
+            
+            values.will[willIndex] = 0;
             currentRoll.successes++;
             currentRoll.willpowerSpent = true;
-            updateTrackDisplay('will');
+            updateComplexTrackDisplay('will');
             document.getElementById('currentSuccesses').textContent = currentRoll.successes;
             updateDiceActionButtons();
             showNotification('Воля потрачена! +1 успех', 'success');
@@ -1968,11 +2065,11 @@
                 abilities: { ...values.abilities },
                 disciplines: values.disciplines.map(d => ({ name: d.name, value: d.value, powers: [...d.powers] })),
                 merits: values.merits.filter((_, i) => document.getElementById(`merit-${i}-name`)?.value),
-                health: values.health,
-                will: values.will,
-                hunger: values.hunger,
+                health: [...values.health],
+                will: [...values.will],
+                hunger: [...values.hunger],
                 humanity: [...values.humanity],
-                bloodPotential: values.bloodPotential,
+                bloodPotential: [...values.bloodPotential],
                 resonance: document.getElementById('resonance').value,
                 bloodSurge: document.getElementById('bloodSurge').value,
                 bloodBonus: document.getElementById('bloodBonus').value,
@@ -2022,11 +2119,11 @@
                     }
                 });
             }
-            values.health = d.health || 0;
-            values.will = d.will || 0;
-            values.hunger = d.hunger || 0;
+            values.health = d.health || Array(10).fill(0);
+            values.will = d.will || Array(10).fill(0);
+            values.hunger = d.hunger || Array(5).fill(0);
             values.humanity = d.humanity || Array(10).fill(0);
-            values.bloodPotential = d.bloodPotential || 0;
+            values.bloodPotential = d.bloodPotential || Array(10).fill(0);
             document.getElementById('resonance').value = d.resonance || '';
             document.getElementById('bloodSurge').value = d.bloodSurge || '';
             document.getElementById('bloodBonus').value = d.bloodBonus || '';
@@ -2053,10 +2150,10 @@
                 for (let i = 0; i < 6; i++) {
                     updateDiscDisplay(i);
                 }
-                updateTrackDisplay('health');
-                updateTrackDisplay('will');
-                updateTrackDisplay('hunger');
-                updateTrackDisplay('bloodPotential');
+                updateComplexTrackDisplay('health');
+                updateComplexTrackDisplay('will');
+                updateSimpleTrackDisplay('hunger');
+                updateSimpleTrackDisplay('bloodPotential');
                 updateHumanityDisplay();
             }, 10);
         }
