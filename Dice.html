@@ -638,6 +638,7 @@
             display: flex;
             gap: 8px;
             justify-content: center;
+            flex-wrap: wrap;
         }
         
         .hunger-btn {
@@ -803,12 +804,30 @@
             color: #ff8888;
         }
         
-        /* Кубы голода */
-        .die-result.hunger {
-            background: rgba(180, 0, 0, 0.25) !important;
-            border-color: #b40000 !important;
-            color: #ff6666 !important;
-            box-shadow: 0 0 12px rgba(180, 0, 0, 0.35) !important;
+        /* Кубы голода - красный перекрас */
+        .die-result.hunger-die {
+            background: rgba(180, 0, 0, 0.3) !important;
+            border-color: #ff4444 !important;
+            color: #ffaaaa !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3) !important;
+        }
+        
+        .die-result.hunger-die.success {
+            background: linear-gradient(135deg, #4a1a1a, #3a0a0a) !important;
+            border-color: #ff6666 !important;
+            color: #ffaaaa !important;
+        }
+        
+        .die-result.hunger-die.critical {
+            background: linear-gradient(135deg, #6a2a0a, #4a1a00) !important;
+            border-color: #ff8800 !important;
+            color: #ffcc00 !important;
+            animation: hungerPulse 1.5s infinite;
+        }
+        
+        @keyframes hungerPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); }
         }
         
         .die-result .die-modifier {
@@ -849,7 +868,7 @@
             display: block;
         }
         
-        .hunger-info {
+        .hunger-dice-info {
             color: #ff6666;
             font-size: 0.8em;
             display: block;
@@ -931,7 +950,7 @@
         .notification.success { background: rgba(0, 100, 0, 0.9); color: #ccffcc; border-left-color: #44ff44; }
         .notification.info { background: rgba(70, 70, 100, 0.9); color: #e0e0ff; border-left-color: #7eb8c9; }
         .notification.warning { background: rgba(180, 100, 0, 0.9); color: #ffe0b0; border-left-color: #ffa500; }
-        .notification.hunger { background: rgba(100, 0, 0, 0.9); color: #ffcccc; border-left-color: #b40000; }
+        .notification.hunger-wake { background: rgba(100, 0, 0, 0.9); color: #ffcccc; border-left-color: #b40000; }
         .notification.hunger-safe { background: rgba(0, 80, 0, 0.9); color: #ccffcc; border-left-color: #44cc44; }
         
         @keyframes slideDown {
@@ -1072,7 +1091,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно ввода числа (кубы голода / проверка) -->
+    <!-- Модальное окно ввода числа -->
     <div class="input-modal-overlay" id="inputModal">
         <div class="input-modal">
             <div class="input-modal-title" id="inputModalTitle">Введите значение</div>
@@ -1108,7 +1127,7 @@
                 <span class="hunger-value" id="hungerValue">0/5</span>
             </div>
             <div class="hunger-dots" id="hungerDots"></div>
-            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <div class="hunger-controls">
                 <button class="hunger-btn" onclick="adjustHunger(-1)">−</button>
                 <button class="hunger-btn" onclick="adjustHunger(1)">+</button>
                 <button class="hunger-check-btn" onclick="startHungerCheck()">🩸 Проверка на голод</button>
@@ -1164,7 +1183,7 @@
             <div class="success-summary">
                 <span>Успехов: <span class="success-count" id="successCount">0</span></span>
                 <span class="botch-info" id="botchInfo"></span>
-                <span class="hunger-info" id="hungerDiceInfo"></span>
+                <span class="hunger-dice-info" id="hungerDiceInfo"></span>
                 <span class="willpower-used-tag" id="willpowerUsedIndicator"></span>
             </div>
             
@@ -1196,6 +1215,7 @@
             <span>✨ 10 = Двойной успех</span> •
             <span>❌ 3,5,7,9 = Неудача</span>
             <span id="botchHelpText"></span>
+            <span id="hungerHelpText"></span>
         </div>
     </div>
 
@@ -1205,8 +1225,8 @@
         let specialty = 20;
         const maxSpecialty = 20;
         let currentCharacter = null;
-        let botchRule = false;
-        let hungerRule = false;
+        let botchRule = false;       // Только для НЕ-вампиров
+        let hungerDiceEnabled = false; // Только для вампиров (перекрас кубов)
         let hungerLevel = 0;
         let currentRolls = [];
         let currentSuccesses = 0;
@@ -1218,9 +1238,9 @@
         const MAX_HISTORY = 15;
         
         const characters = {
-            vampire: { name: 'Вампир', icon: '🩸', specialtyName: 'Кровь', specialtyIcon: '🩸', className: 'vampire', hasHunger: true },
-            hunter: { name: 'Охотник', icon: '⚔️', specialtyName: 'Добродетель', specialtyIcon: '⚔️', className: 'hunter', hasHunger: false },
-            mage: { name: 'Маг', icon: '🔮', specialtyName: 'Квинтэссенция', specialtyIcon: '🔮', className: 'mage', hasHunger: false }
+            vampire: { name: 'Вампир', icon: '🩸', specialtyName: 'Кровь', specialtyIcon: '🩸', className: 'vampire' },
+            hunter: { name: 'Охотник', icon: '⚔️', specialtyName: 'Добродетель', specialtyIcon: '⚔️', className: 'hunter' },
+            mage: { name: 'Маг', icon: '🔮', specialtyName: 'Квинтэссенция', specialtyIcon: '🔮', className: 'mage' }
         };
         
         function init() {
@@ -1240,11 +1260,7 @@
             
             // Показываем/скрываем панель голода
             const hungerPanel = document.getElementById('hungerPanel');
-            if (isVampire) {
-                hungerPanel.classList.add('visible');
-            } else {
-                hungerPanel.classList.remove('visible');
-            }
+            hungerPanel.classList.toggle('visible', isVampire);
             
             // Обновляем текст правила
             const ruleIcon = document.getElementById('rulesBadgeIcon');
@@ -1252,20 +1268,27 @@
             const toggleIcon = document.getElementById('ruleToggleIcon');
             const toggleLabel = document.getElementById('ruleToggleLabel');
             const toggleDesc = document.getElementById('ruleToggleDesc');
+            const helpBotch = document.getElementById('botchHelpText');
+            const helpHunger = document.getElementById('hungerHelpText');
             
             if (isVampire) {
-                hungerRule = botchRule;
+                // У вампиров: нет критических провалов, только кубы голода
                 botchRule = false;
                 
                 ruleIcon.textContent = '🩸';
-                ruleText.textContent = hungerRule ? 'Кубы голода (вкл)' : 'Кубы голода (выкл)';
-                ruleText.className = hungerRule ? 'rules-text active' : 'rules-text';
+                ruleText.textContent = hungerDiceEnabled ? 'Кубы голода (вкл)' : 'Кубы голода (выкл)';
+                ruleText.className = hungerDiceEnabled ? 'rules-text active' : 'rules-text';
                 
                 toggleIcon.textContent = '🩸';
                 toggleLabel.textContent = 'Кубы голода';
-                toggleDesc.textContent = 'Замена части кубов на красные кубы голода';
+                toggleDesc.textContent = 'Перекрашивает часть кубов в красный (чисто визуально)';
+                
+                helpBotch.innerHTML = '';
+                helpHunger.innerHTML = hungerDiceEnabled ? '• <span style="color:#ff4444;">🔴 Кубы голода активны</span>' : '';
             } else {
-                hungerRule = false;
+                // У охотников и магов: критические провалы
+                hungerDiceEnabled = false;
+                hungerDiceCount = 0;
                 
                 ruleIcon.textContent = '💀';
                 ruleText.textContent = botchRule ? '1 — крит. провал (вкл)' : '1 — крит. провал (выкл)';
@@ -1274,13 +1297,12 @@
                 toggleIcon.textContent = '💀';
                 toggleLabel.textContent = '1 — критический провал';
                 toggleDesc.textContent = 'Каждая 1 отнимает успех (нельзя перебросить)';
+                
+                helpHunger.innerHTML = '';
+                helpBotch.innerHTML = botchRule ? '• <span style="color:#ff6b6b;">💀 1 = -1 успех</span>' : '';
             }
             
-            // Обновляем help text
-            document.getElementById('botchHelpText').innerHTML = '';
-            if (!isVampire && botchRule) {
-                document.getElementById('botchHelpText').innerHTML = '• <span style="color:#ff6b6b;">💀 1 = -1 успех</span>';
-            }
+            updateToggleSwitch();
         }
         
         function openModal() {
@@ -1305,25 +1327,31 @@
         
         function toggleSpecialRule() {
             if (currentCharacter === 'vampire') {
-                hungerRule = !hungerRule;
+                hungerDiceEnabled = !hungerDiceEnabled;
             } else {
                 botchRule = !botchRule;
             }
-            updateToggleSwitch();
             updateUI();
             saveSettings();
         }
         
         function updateToggleSwitch() {
             const toggleSwitch = document.getElementById('toggleSwitch');
-            const isActive = currentCharacter === 'vampire' ? hungerRule : botchRule;
-            if (isActive) toggleSwitch.classList.add('active');
-            else toggleSwitch.classList.remove('active');
+            const isActive = currentCharacter === 'vampire' ? hungerDiceEnabled : botchRule;
+            toggleSwitch.classList.toggle('active', isActive);
         }
         
         function selectCharacter(type) {
             currentCharacter = type;
             const char = characters[type];
+            
+            // Сбрасываем специфичные правила при смене персонажа
+            if (type !== 'vampire') {
+                hungerDiceEnabled = false;
+                hungerDiceCount = 0;
+            } else {
+                botchRule = false;
+            }
             
             document.querySelectorAll('.character-option').forEach(opt => opt.classList.remove('selected'));
             const optMap = { vampire: 'optVampire', hunter: 'optHunter', mage: 'optMage' };
@@ -1354,7 +1382,7 @@
         function saveSettings() {
             localStorage.setItem('characterType', currentCharacter || '');
             localStorage.setItem('botchRule', botchRule);
-            localStorage.setItem('hungerRule', hungerRule);
+            localStorage.setItem('hungerDiceEnabled', hungerDiceEnabled);
             localStorage.setItem('hungerLevel', hungerLevel);
         }
         
@@ -1364,11 +1392,8 @@
                 selectCharacter(savedType);
             }
             
-            const savedBotch = localStorage.getItem('botchRule');
-            if (savedBotch !== null) botchRule = savedBotch === 'true';
-            
-            const savedHunger = localStorage.getItem('hungerRule');
-            if (savedHunger !== null) hungerRule = savedHunger === 'true';
+            botchRule = localStorage.getItem('botchRule') === 'true';
+            hungerDiceEnabled = localStorage.getItem('hungerDiceEnabled') === 'true';
             
             const savedHungerLevel = localStorage.getItem('hungerLevel');
             if (savedHungerLevel !== null) hungerLevel = parseInt(savedHungerLevel) || 0;
@@ -1396,13 +1421,13 @@
             saveSettings();
         }
         
-        // Модальное окно ввода
+        // Модальное окно ввода числа
         function showInputModal(title, desc, max, callback) {
             document.getElementById('inputModalTitle').textContent = title;
             document.getElementById('inputModalDesc').textContent = desc;
             const field = document.getElementById('inputModalField');
             field.max = max;
-            field.value = Math.min(max, 0);
+            field.value = 0;
             document.getElementById('inputModal').classList.add('active');
             inputModalCallback = callback;
             setTimeout(() => field.focus(), 200);
@@ -1422,17 +1447,18 @@
             }
         }
         
-        // Запуск броска (для вампиров спрашиваем кубы голода)
+        // Запуск броска
         function startRoll() {
             const diceCount = parseInt(document.getElementById('diceCount').value) || 5;
             const validCount = Math.max(1, Math.min(30, diceCount));
             document.getElementById('diceCount').value = validCount;
             
-            if (currentCharacter === 'vampire' && hungerRule) {
+            // Для вампиров с включёнными кубами голода — спрашиваем сколько кубов перекрасить
+            if (currentCharacter === 'vampire' && hungerDiceEnabled) {
                 const maxHungerDice = Math.min(5, validCount);
                 showInputModal(
                     '🩸 Кубы голода',
-                    `Сколько кубов заменить? (0-${maxHungerDice})`,
+                    `Сколько кубов перекрасить в красный? (0-${maxHungerDice})\nЭто только визуальный эффект`,
                     maxHungerDice,
                     (value) => {
                         hungerDiceCount = Math.max(0, Math.min(maxHungerDice, value));
@@ -1445,7 +1471,7 @@
             }
         }
         
-        // Запуск проверки на голод
+        // Проверка на голод
         function startHungerCheck() {
             showInputModal(
                 '🩸 Проверка на голод',
@@ -1469,8 +1495,6 @@
                 rolls.push({ value: roll, isSuccess });
             }
             
-            const diceResults = rolls.map(r => r.isSuccess ? `${r.value}✓` : r.value).join(' ');
-            
             if (successes > 0) {
                 showNotification('🩸 Голод не растёт, зверь не просыпается', 'hunger-safe');
                 addToHistory(`Проверка голода ${count}D10`, successes, rolls.map(r => ({
@@ -1480,13 +1504,13 @@
                     isBotch: false,
                     rerolled: false,
                     canReroll: false,
-                    isHunger: true
+                    isHungerDie: false
                 })), 0, 'Зверь спит');
             } else {
                 hungerLevel = Math.min(5, hungerLevel + 1);
                 updateHungerDisplay();
                 saveSettings();
-                showNotification('🩸 Голод растёт! +1 к уровню голода', 'hunger');
+                showNotification('🩸 Голод растёт! +1 к уровню голода', 'hunger-wake');
                 addToHistory(`Проверка голода ${count}D10`, 0, rolls.map(r => ({
                     value: r.value,
                     type: 'failure',
@@ -1494,14 +1518,16 @@
                     isBotch: false,
                     rerolled: false,
                     canReroll: false,
-                    isHunger: true
+                    isHungerDie: false
                 })), 0, 'Голод +1');
             }
         }
         
+        // Оценка куба: у вампиров НИКОГДА не применяется botchRule
         function evaluateDie(value) {
             if (value === 10) return { type: 'critical', successes: 2, isBotch: false };
             if (value % 2 === 0) return { type: 'success', successes: 1, isBotch: false };
+            // Критический провал только для НЕ-вампиров с включённым правилом
             if (value === 1 && botchRule && currentCharacter !== 'vampire') return { type: 'botch', successes: -1, isBotch: true };
             return { type: 'failure', successes: 0, isBotch: false };
         }
@@ -1524,7 +1550,7 @@
             for (let i = 0; i < count; i++) {
                 const roll = Math.floor(Math.random() * 10) + 1;
                 const evaluation = evaluateDie(roll);
-                const isHungerDie = (currentCharacter === 'vampire' && hungerRule && i < hungerDiceCount);
+                const isHungerDie = (currentCharacter === 'vampire' && hungerDiceEnabled && i < hungerDiceCount);
                 
                 currentRolls.push({
                     value: roll,
@@ -1533,7 +1559,7 @@
                     isBotch: evaluation.isBotch,
                     rerolled: false,
                     canReroll: !evaluation.isBotch && evaluation.type === 'failure',
-                    isHunger: isHungerDie
+                    isHungerDie: isHungerDie
                 });
                 
                 currentSuccesses += evaluation.successes;
@@ -1558,7 +1584,7 @@
             currentRolls.forEach((roll) => {
                 const dieElement = document.createElement('div');
                 let classes = `die-result ${roll.type}`;
-                if (roll.isHunger) classes += ' hunger';
+                if (roll.isHungerDie) classes += ' hunger-die';
                 dieElement.className = classes;
                 
                 let modifier = '';
@@ -1576,12 +1602,14 @@
             
             document.getElementById('successCount').textContent = currentSuccesses;
             
+            // Показываем информацию о провалах (только для не-вампиров)
             if (botchCount > 0 && currentCharacter !== 'vampire') {
                 document.getElementById('botchInfo').textContent = `(провалов: ${botchCount})`;
             }
             
+            // Информация о кубах голода
             if (hungerDiceCount > 0) {
-                document.getElementById('hungerDiceInfo').textContent = `(кубов голода: ${hungerDiceCount})`;
+                document.getElementById('hungerDiceInfo').textContent = `(🔴 кубов голода: ${hungerDiceCount})`;
             }
         }
         
@@ -1681,7 +1709,7 @@
             
             const oldRoll = currentRolls[failureIndex];
             const oldValue = oldRoll.value;
-            const wasHunger = oldRoll.isHunger;
+            const wasHunger = oldRoll.isHungerDie;
             
             const newValue = Math.floor(Math.random() * 10) + 1;
             const evaluation = evaluateDie(newValue);
@@ -1695,7 +1723,7 @@
                 isBotch: evaluation.isBotch,
                 rerolled: true,
                 canReroll: false,
-                isHunger: wasHunger
+                isHungerDie: wasHunger
             };
             
             currentSuccesses += evaluation.successes;
@@ -1739,11 +1767,9 @@
                 if (r.type === 'critical') marker = '✨';
                 else if (r.type === 'success') marker = '✓';
                 else if (r.type === 'botch') marker = '💀';
-                return r.isHunger ? `🔴${r.value}${marker}` : `${r.value}${marker}`;
+                const prefix = r.isHungerDie ? '🔴' : '';
+                return `${prefix}${r.value}${marker}`;
             }).join(' ');
-            
-            let extraText = '';
-            if (botchRule && botches > 0) extraText += ` [пр:${botches}]`;
             
             const record = {
                 action, successes, diceResults, note, botches,
